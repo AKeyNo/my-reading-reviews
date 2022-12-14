@@ -26,7 +26,6 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
       `https://www.googleapis.com/books/v1/volumes/${id}?key=${process.env.GOOGLE_BOOKS_API_KEY}`
     );
 
-    console.log(response.data.volumeInfo);
     res.status(200).json(response.data.volumeInfo);
   } catch (error) {
     res.status(500).json({ message: error });
