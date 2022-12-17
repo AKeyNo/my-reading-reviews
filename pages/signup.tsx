@@ -226,3 +226,22 @@ export default function SignUp() {
     </Wrapper>
   );
 }
+
+export const getServerSideProps = async () => {
+  // if there is already a user logged in, redirect to home page
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session)
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+
+  return {
+    props: {},
+  };
+};

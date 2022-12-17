@@ -4,12 +4,10 @@ import { Header } from './Header';
 
 export const Wrapper: React.FC<PropsWithChildren<any>> = ({ children }) => {
   return (
-    <>
-      <div className='min-h-screen flex flex-col'>
-        <Header />
-        <div className='mx-72 bg-gray-900 flex-1'>{children}</div>
-        <Footer />
-      </div>
-    </>
+    <div className='flex flex-col min-h-screen'>
+      <Header />
+      <div className='flex-1 bg-gray-900 mx-72'>{children}</div>
+      <Footer />
+    </div>
   );
 };

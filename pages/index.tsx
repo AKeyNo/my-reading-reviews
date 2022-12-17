@@ -1,9 +1,11 @@
+import { useSession } from '@supabase/auth-helpers-react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { AuthButtons } from '../components/AuthButtons';
 import { Wrapper } from '../components/Wrapper';
 
 export default function Home() {
-  const router = useRouter();
+  const session = useSession();
+
   return (
     <Wrapper>
       <Head>
@@ -14,24 +16,7 @@ export default function Home() {
         <h3 className='py-8 text-xl font-semibold text-blue-300'>
           Easy, quick, and made for readers.
         </h3>
-        <div className='-mb-20'>
-          <button
-            onClick={() => {
-              router.push('/signup');
-            }}
-            className='px-12 py-4 mx-32 duration-200 bg-orange-700 rounded-full hover:-translate-y-1 hover:scale-110 hover:bg-orange-800 hover:drop-shadow-lg'
-          >
-            Sign Up
-          </button>
-          <button
-            onClick={() => {
-              router.push('/signin');
-            }}
-            className='px-12 py-4 mx-32 duration-200 bg-orange-700 rounded-full hover:-translate-y-1 hover:scale-110 hover:bg-orange-800 hover:drop-shadow-lg'
-          >
-            Sign In
-          </button>
-        </div>
+        {!session ? <AuthButtons /> : null}
       </div>
     </Wrapper>
   );
