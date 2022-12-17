@@ -20,11 +20,10 @@ export const Header = () => {
         }
 
         if (data) {
-          console.log('typeof', typeof data[0]);
           setUsername(data[0].username);
         }
       } catch (error: any) {
-        console.log('error', error);
+        console.error('error', error);
       }
     };
 

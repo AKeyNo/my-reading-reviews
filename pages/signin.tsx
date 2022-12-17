@@ -37,7 +37,7 @@ export default function SignIn() {
 
       router.push('/');
     } catch (error: any) {
-      console.log('error', error);
+      console.error('error', error);
       if (error.message.includes('Email')) {
         setErrors((previousErrors) => ({
           ...previousErrors,
