@@ -1,11 +1,11 @@
-export interface SignUpFields {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+export interface AuthFields {
+  username: string | null;
+  email: string | null;
+  password: string | null;
+  confirmPassword: string | null;
 }
 
-export interface SignUpErrors {
+export interface AuthErrors {
   usernameError: string | null;
   emailError: string | null;
   passwordError: string | null;

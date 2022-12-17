@@ -1,20 +1,32 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Wrapper } from '../components/Wrapper';
-import { SignUpErrors, SignUpFields } from '../types/auth';
+import { AuthErrors, AuthFields } from '../types/auth';
 import supabase from '../client';
 import { useRouter } from 'next/router';
 
 export default function SignUp() {
   const router = useRouter();
-  const [userFields, setUserFields] = useState<SignUpFields>(
-    {} as SignUpFields
-  );
+  const [userFields, setUserFields] = useState<AuthFields>({} as AuthFields);
 
-  const [errors, setErrors] = useState<SignUpErrors>({} as SignUpErrors);
+  const [errors, setErrors] = useState<AuthErrors>({} as AuthErrors);
 
   const signUpSubmit = async () => {
     window.event?.preventDefault();
+
+    if (!userFields.username || userFields.username?.length == 0) {
+      setErrors((previousErrors) => ({
+        ...previousErrors,
+        usernameError: 'Username is empty!',
+      }));
+    }
+
+    if (!userFields.email || userFields.email?.length == 0) {
+      setErrors((previousErrors) => ({
+        ...previousErrors,
+        emailError: 'Email is empty!',
+      }));
+    }
 
     if (
       errors.usernameError ||
@@ -27,8 +39,8 @@ export default function SignUp() {
 
     try {
       const { error } = await supabase.auth.signUp({
-        email: userFields.email,
-        password: userFields.password,
+        email: userFields.email!,
+        password: userFields.password!,
         options: {
           data: {
             username: userFields.username,
@@ -122,7 +134,7 @@ export default function SignUp() {
                 setUserFields({
                   ...userFields,
                   username: e.target.value,
-                } as SignUpFields);
+                } as AuthFields);
                 setErrors((previousErrors) => ({
                   ...previousErrors,
                   usernameError: '',
@@ -146,7 +158,7 @@ export default function SignUp() {
                 setUserFields({
                   ...userFields,
                   email: e.target.value,
-                } as SignUpFields);
+                } as AuthFields);
                 setErrors((previousErrors) => ({
                   ...previousErrors,
                   emailError: '',
@@ -170,7 +182,7 @@ export default function SignUp() {
                 setUserFields({
                   ...userFields,
                   password: e.target.value,
-                } as SignUpFields);
+                } as AuthFields);
               }}
             />
             <p className='text-red-500'>{errors.passwordError}&nbsp;</p>
@@ -190,7 +202,7 @@ export default function SignUp() {
                 setUserFields({
                   ...userFields,
                   confirmPassword: e.target.value,
-                } as SignUpFields);
+                } as AuthFields);
               }}
             />
             <p className='text-red-500'>{errors.confirmPasswordError}&nbsp;</p>
