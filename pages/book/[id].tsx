@@ -4,11 +4,21 @@ import { useEffect, useState } from 'react';
 import { Wrapper } from '../../components/Wrapper';
 import parse from 'html-react-parser';
 import Image from 'next/image';
+import { useUser } from '@supabase/auth-helpers-react';
+import { Dialog } from '../../components/Dialog';
+import { ListEditor } from '../../components/ListEditor';
+import { Database } from '../../types/supabase';
 
 export default function BookPage() {
+  const user = useUser();
   const router = useRouter();
   const { id } = router.query;
   const [book, setBook] = useState(null as any);
+  const [userBookInformation, setUserBookInformation] = useState(
+    {} as Database['public']['Tables']['read_list']['Row']
+  );
+
+  const [isShowingListEditor, setIsShowingListEditor] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -17,35 +27,64 @@ export default function BookPage() {
       const response = await axios.get(`/api/book/${id}`);
 
       setBook(response.data);
+
+      if (!user) {
+        return;
+      }
+
+      setUserBookInformation({
+        user_id: user.id,
+        book_id: id as string,
+        status: 'Reading',
+        score: 0,
+        pages_read: 0,
+        start_date: null,
+        finish_date: null,
+        times_read: 0,
+        favorite: false,
+      } as Database['public']['Tables']['read_list']['Row']);
     };
 
     fetchBook();
-  }, [id]);
+  }, [id, user]);
 
   if (!book) return <div>loading...</div>;
 
   return (
     <Wrapper>
-      <div className='grid grid-cols-4 p-12 border-b-4 border-gray-800 grid-rows-1'>
-        <div className='mr-4 text-center relative col-span-1'>
+      <div className='grid grid-cols-4 grid-rows-1 p-12 border-b-4 border-gray-800'>
+        <div className='relative col-span-1 mr-4 text-center'>
           <Image
             src={book.imageLinks.thumbnail}
-            alt={book.name}
+            alt={book.name || 'Missing Book Name'}
             width={200}
             height={300}
-            className='rounded-md mx-auto w-48'
+            className='w-48 mx-auto rounded-md'
           />
-          <div className='text-sm bg-orange-700 mt-4 p-4 rounded-md hover:bg-orange-800'>
-            Add to List
-          </div>
+          {user ? (
+            <button
+              onClick={() => setIsShowingListEditor(true)}
+              className='p-4 mt-4 text-sm bg-orange-700 rounded-md hover:bg-orange-800'
+            >
+              Add to List
+            </button>
+          ) : null}
         </div>
+        <Dialog isActive={isShowingListEditor}>
+          <ListEditor
+            book={book}
+            userBookInformation={userBookInformation}
+            setUserBookInformation={setUserBookInformation}
+            closeListEditor={() => setIsShowingListEditor(false)}
+          />
+        </Dialog>
         <div className='col-span-3'>
-          <h1 className='text-3xl pb-4'>{book.title}</h1>
+          <h1 className='pb-4 text-3xl'>{book.title}</h1>
           <p>{parse(book.description)}</p>
         </div>
       </div>
-      <div className='grid p-12 border-t-0 flow-col grid-rows-1 grid-cols-4 gap-4'>
-        <div className='bg-gray-800 p-4 rounded-md col-span-1'>
+      <div className='grid grid-cols-4 grid-rows-1 gap-4 p-12 border-t-0 flow-col'>
+        <div className='col-span-1 p-4 bg-gray-800 rounded-md'>
           <h2 className='font-semibold'>Stats</h2>
           <p>Page Count: {book.pageCount}</p>
           <p>Published: {book.publishedDate}</p>
@@ -54,7 +93,7 @@ export default function BookPage() {
             rating{book.ratingsCount > 1 ? 's' : ''})
           </p>
         </div>
-        <div className='bg-gray-800 p-4 rounded-md col-span-3'>
+        <div className='col-span-3 p-4 bg-gray-800 rounded-md'>
           There are currently no reviews!
         </div>
       </div>

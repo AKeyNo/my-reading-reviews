@@ -45,6 +45,10 @@ export interface Database {
           review: string | null
           review_post_time: string | null
           favorite: boolean
+          notes: string | null
+          start_date: string | null
+          finish_date: string | null
+          times_read: number | null
         }
         Insert: {
           book_id: string
@@ -55,6 +59,10 @@ export interface Database {
           review?: string | null
           review_post_time?: string | null
           favorite?: boolean
+          notes?: string | null
+          start_date?: string | null
+          finish_date?: string | null
+          times_read?: number | null
         }
         Update: {
           book_id?: string
@@ -65,6 +73,10 @@ export interface Database {
           review?: string | null
           review_post_time?: string | null
           favorite?: boolean
+          notes?: string | null
+          start_date?: string | null
+          finish_date?: string | null
+          times_read?: number | null
         }
       }
     }
