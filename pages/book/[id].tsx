@@ -18,6 +18,9 @@ export default function BookPage() {
     {} as Database['public']['Tables']['read_list']['Row']
   );
 
+  // helps handle the button that says "Add to List" or "Edit List" depending on if their review is online or not
+  const [isInformationIsOnline, setIsInformationIsOnline] = useState(false);
+
   const [isShowingListEditor, setIsShowingListEditor] = useState(false);
 
   useEffect(() => {
@@ -32,6 +35,11 @@ export default function BookPage() {
         return;
       }
 
+      if (response.data.userBookInformation) {
+        setUserBookInformation(response.data.userBookInformation);
+        return setIsInformationIsOnline(true);
+      }
+
       setUserBookInformation({
         user_id: user.id,
         book_id: id as string,
@@ -43,6 +51,8 @@ export default function BookPage() {
         times_read: 0,
         favorite: false,
       } as Database['public']['Tables']['read_list']['Row']);
+
+      return setIsInformationIsOnline(false);
     };
 
     fetchBook();
@@ -66,7 +76,7 @@ export default function BookPage() {
               onClick={() => setIsShowingListEditor(true)}
               className='p-4 mt-4 text-sm bg-orange-700 rounded-md hover:bg-orange-800'
             >
-              Add to List
+              {isInformationIsOnline ? 'Edit Entry' : 'Add to List'}
             </button>
           ) : null}
         </div>
@@ -76,6 +86,7 @@ export default function BookPage() {
             userBookInformation={userBookInformation}
             setUserBookInformation={setUserBookInformation}
             closeListEditor={() => setIsShowingListEditor(false)}
+            setIsInformationOnline={() => setIsInformationIsOnline(true)}
           />
         </Dialog>
         <div className='col-span-3'>

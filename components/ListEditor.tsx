@@ -9,6 +9,7 @@ export const ListEditor = ({
   userBookInformation,
   setUserBookInformation,
   closeListEditor,
+  setIsInformationOnline,
 }: ListEditorFields) => {
   const user = useUser();
   const {
@@ -43,6 +44,8 @@ export const ListEditor = ({
     if (error) {
       console.error('error', error);
     }
+
+    setIsInformationOnline();
   };
 
   return (
@@ -51,7 +54,7 @@ export const ListEditor = ({
       onSubmit={() => {
         window.event?.preventDefault();
         submitUserBookInformation();
-        closeListEditor;
+        closeListEditor();
       }}
     >
       <button

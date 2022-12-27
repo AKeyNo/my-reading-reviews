@@ -8,4 +8,5 @@ export interface ListEditorFields {
     SetStateAction<Database['public']['Tables']['read_list']['Row']>
   >;
   closeListEditor: () => void;
+  setIsInformationOnline: () => void;
 }

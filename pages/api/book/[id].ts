@@ -42,11 +42,15 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
       .from('read_list')
       .select('*')
       .eq('user_id', user.id)
+      .eq('book_id', id)
       .maybeSingle();
 
     if (!data || error) return res.status(200).json(response.data.volumeInfo);
 
-    return res.status(200).json({ ...response.data.volumeInfo, ...data });
+    return res.status(200).json({
+      ...response.data.volumeInfo,
+      userBookInformation: data,
+    });
   } catch (error) {
     res.status(500).json({ message: error });
   }
