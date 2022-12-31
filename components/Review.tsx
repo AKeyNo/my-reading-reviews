@@ -18,7 +18,7 @@ JSX.Element => {
   const { username, avatar_url } = user_id;
 
   // convert review_post_time to human readable text
-  const timeSincePosted = (time: string) => {
+  const timePosted = (time: string) => {
     const date = new Date(time);
     const month = date.toLocaleString('default', { month: 'short' });
     const day = date.getDate();
@@ -42,7 +42,7 @@ JSX.Element => {
           <div>{score}/10</div>
         </div>
         <div className='ml-auto text-gray-400'>
-          Posted {review_post_time ? timeSincePosted(review_post_time) : null}
+          Posted {review_post_time ? timePosted(review_post_time) : null}
         </div>
       </div>
       <div className='mt-4'>{reviewText}</div>
