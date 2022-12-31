@@ -8,6 +8,7 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { Dialog } from '../../components/Dialog';
 import { ListEditor } from '../../components/ListEditor';
 import { Database } from '../../types/supabase';
+import { ReviewList } from '../../components/ReviewList';
 
 export default function BookPage() {
   const user = useUser();
@@ -17,10 +18,8 @@ export default function BookPage() {
   const [userBookInformation, setUserBookInformation] = useState(
     {} as Database['public']['Tables']['read_list']['Row']
   );
-
   // helps handle the button that says "Add to List" or "Edit List" depending on if their review is online or not
   const [isInformationIsOnline, setIsInformationIsOnline] = useState(false);
-
   const [isShowingListEditor, setIsShowingListEditor] = useState(false);
 
   useEffect(() => {
@@ -74,7 +73,7 @@ export default function BookPage() {
           {user ? (
             <button
               onClick={() => setIsShowingListEditor(true)}
-              className='p-4 mt-4 text-sm bg-orange-700 rounded-md hover:bg-orange-800'
+              className='w-4/5 p-4 mt-4 text-sm duration-100 bg-orange-700 rounded-md hover:bg-orange-800'
             >
               {isInformationIsOnline ? 'Edit Entry' : 'Add to List'}
             </button>
@@ -104,9 +103,7 @@ export default function BookPage() {
             rating{book.ratingsCount > 1 ? 's' : ''})
           </p>
         </div>
-        <div className='col-span-3 p-4 bg-gray-800 rounded-md'>
-          There are currently no reviews!
-        </div>
+        <ReviewList id={id as string} />
       </div>
     </Wrapper>
   );
