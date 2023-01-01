@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useEffect, useRef, useState } from 'react';
 import supabase from '../client';
 import { Database } from '../types/supabase';
 import { Review } from './Review';
@@ -8,11 +9,15 @@ interface Props {
 }
 
 export const ReviewList = ({ id }: Props): JSX.Element => {
+  const user = useUser();
   const [reviews, setReviews] = useState(
     [] as (Omit<Database['public']['Tables']['read_list']['Row'], 'user_id'> & {
       user_id: { username: string; avatar_url: string };
     })[]
   );
+
+  const reviewRef = useRef<HTMLTextAreaElement>(null);
+
   // store the time the reviews were loaded
   const [initialReviewLoadTime, setInitialReviewLoadTime] = useState(
     new Date().toISOString()
@@ -25,7 +30,8 @@ export const ReviewList = ({ id }: Props): JSX.Element => {
       const { data, error, status } = await supabase
         .from('read_list')
         .select('*, user_id (username, avatar_url)')
-        .lte('review_post_time', initialReviewLoadTime);
+        .lte('review_post_time', initialReviewLoadTime)
+        .eq('book_id', id);
 
       if (!data || error) return;
 
@@ -35,6 +41,30 @@ export const ReviewList = ({ id }: Props): JSX.Element => {
 
     fetchReviews();
   }, [initialReviewLoadTime]);
+
+  const submitReview = async () => {
+    window.event?.preventDefault();
+
+    if (!reviewRef.current?.value || !user) return;
+
+    const { data, error } = await supabase.from('read_list').upsert([
+      {
+        user_id: user.id,
+        book_id: id,
+        review: reviewRef.current?.value,
+        review_post_time: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      console.error('error', error);
+    }
+
+    setInitialReviewLoadTime(new Date().toISOString());
+    setShowReviewCreation(false);
+
+    reviewRef.current.value = '';
+  };
 
   return (
     <div className='w-full col-span-3'>
@@ -48,9 +78,12 @@ export const ReviewList = ({ id }: Props): JSX.Element => {
         </button>
       </div>
       {showReviewCreation ? (
-        <form className='col-span-3 p-4 mb-4 bg-gray-800 rounded-md'>
+        <form
+          onSubmit={submitReview}
+          className='col-span-3 p-4 mb-4 bg-gray-800 rounded-md'
+        >
           <label className='mb-2 font-semibold'>Create a review</label>
-          <textarea className='w-full p-2 my-2 rounded-md' />
+          <textarea ref={reviewRef} className='w-full p-2 my-2 rounded-md' />
           <button
             type='submit'
             className='p-2 text-sm duration-100 bg-orange-700 rounded-md hover:bg-orange-800'
