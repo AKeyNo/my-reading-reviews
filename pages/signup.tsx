@@ -2,11 +2,12 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Wrapper } from '../components/Wrapper';
 import { AuthErrors, AuthFields } from '../types/auth';
-import supabase from '../client';
 import { useRouter } from 'next/router';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 export default function SignUp() {
   const router = useRouter();
+  const supabase = useSupabaseClient();
   const [userFields, setUserFields] = useState<AuthFields>({} as AuthFields);
 
   const [errors, setErrors] = useState<AuthErrors>({} as AuthErrors);
@@ -140,8 +141,11 @@ export default function SignUp() {
                   usernameError: '',
                 }));
               }}
+              data-cy='username-input'
             />
-            <p className='text-red-500'>{errors.usernameError}&nbsp;</p>
+            <p className='text-red-500' data-cy='username-error'>
+              {errors.usernameError}&nbsp;
+            </p>
           </div>
 
           <div className='flex-auto w-2/3 max-w-md mb-1 min-w-fit'>
@@ -164,8 +168,11 @@ export default function SignUp() {
                   emailError: '',
                 }));
               }}
+              data-cy='email-input'
             />
-            <p className='text-red-500'>{errors.emailError}&nbsp;</p>
+            <p className='text-red-500' data-cy='email-error'>
+              {errors.emailError}&nbsp;
+            </p>
           </div>
 
           <div className='flex-auto w-2/3 max-w-md mb-1 min-w-fit'>
@@ -184,8 +191,11 @@ export default function SignUp() {
                   password: e.target.value,
                 } as AuthFields);
               }}
+              data-cy='password-input'
             />
-            <p className='text-red-500'>{errors.passwordError}&nbsp;</p>
+            <p className='text-red-500' data-cy='password-error'>
+              {errors.passwordError}&nbsp;
+            </p>
           </div>
 
           <div className='flex-auto w-2/3 max-w-md mb-1 min-w-fit'>
@@ -204,13 +214,17 @@ export default function SignUp() {
                   confirmPassword: e.target.value,
                 } as AuthFields);
               }}
+              data-cy='confirm-password-input'
             />
-            <p className='text-red-500'>{errors.confirmPasswordError}&nbsp;</p>
+            <p className='text-red-500' data-cy='confirm-password-error'>
+              {errors.confirmPasswordError}&nbsp;
+            </p>
           </div>
 
           <button
             className='p-4 px-12 mt-4 duration-200 bg-orange-700 rounded-md hover:bg-orange-800'
             type='submit'
+            data-cy='sign-up-submit-button'
           >
             Sign Up
           </button>
@@ -227,21 +241,21 @@ export default function SignUp() {
   );
 }
 
-export const getServerSideProps = async () => {
-  // if there is already a user logged in, redirect to home page
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+// export const getServerSideProps = async () => {
+//   // if there is already a user logged in, redirect to home page
+//   const {
+//     data: { session },
+//   } = await supabase.auth.getSession();
 
-  if (session)
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
+//   if (session)
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       },
+//     };
 
-  return {
-    props: {},
-  };
-};
+//   return {
+//     props: {},
+//   };
+// };

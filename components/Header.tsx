@@ -1,15 +1,15 @@
-import { useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { useEffect, useState } from 'react';
-import supabase from '../client';
 
 export const Header = () => {
+  const supabase = useSupabaseClient();
   const user = useUser();
   const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
     const getProfile = async () => {
       try {
-        if (!user) throw new Error('No user found');
+        if (!user) return;
 
         const { data, error, status } = await supabase
           .from('profiles')
@@ -30,5 +30,17 @@ export const Header = () => {
     getProfile();
   }, [user]);
 
-  return <header className='h-14'>Hello {username || ''}</header>;
+  return (
+    <header className='h-14'>
+      <span data-cy='hello-message'>Hello {username || ''}!</span>
+
+      <button
+        onClick={async () => {
+          await supabase.auth.signOut();
+        }}
+      >
+        Sign Out
+      </button>
+    </header>
+  );
 };

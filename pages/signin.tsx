@@ -1,14 +1,22 @@
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import supabase from '../client';
+import { useEffect, useState } from 'react';
 import { Wrapper } from '../components/Wrapper';
 import { AuthErrors, AuthFields } from '../types/auth';
 
 export default function SignIn() {
   const router = useRouter();
+  const supabase = useSupabaseClient();
+  const user = useUser();
   const [userFields, setUserFields] = useState<AuthFields>({} as AuthFields);
   const [errors, setErrors] = useState<AuthErrors>({} as AuthErrors);
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/');
+    }
+  }, [user]);
 
   const signInSubmit = async () => {
     window.event?.preventDefault();
@@ -28,14 +36,12 @@ export default function SignIn() {
     }
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: userFields.email!,
         password: userFields.password!,
       });
 
       if (error) throw error;
-
-      router.push('/');
     } catch (error: any) {
       console.error('error', error);
       if (error.message.includes('Email')) {
@@ -82,6 +88,7 @@ export default function SignIn() {
                   emailError: '',
                 }));
               }}
+              data-cy='email-input'
             />
             <p className='text-red-500'>{errors.emailError}&nbsp;</p>
           </div>
@@ -102,12 +109,14 @@ export default function SignIn() {
                   password: e.target.value,
                 } as AuthFields);
               }}
+              data-cy='password-input'
             />
             <p className='text-red-500'>{errors.passwordError}&nbsp;</p>
           </div>
           <button
             className='p-4 px-12 mt-4 duration-200 bg-orange-700 rounded-md hover:bg-orange-800'
             type='submit'
+            data-cy='sign-in-submit-button'
           >
             Sign In
           </button>
@@ -124,21 +133,21 @@ export default function SignIn() {
   );
 }
 
-export const getServerSideProps = async () => {
-  // if there is already a user logged in, redirect to home page
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+// export const getServerSideProps = async () => {
+//   // if there is already a user logged in, redirect to home page
+//   const {
+//     data: { session },
+//   } = await supabase.auth.getSession();
 
-  if (session)
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
+//   if (session)
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       },
+//     };
 
-  return {
-    props: {},
-  };
-};
+//   return {
+//     props: {},
+//   };
+// };
