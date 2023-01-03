@@ -1,34 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# My Reading Reviews
 
-## Getting Started
+A book tracker using the Google Books API where users are able to keep track of their readings and leave book reviews.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
+Make sure that you have installed [Git](https://git-scm.com/) and [Node.js](https://nodejs.org/en/).
+
+## Normal Installation
+
+In your favorite shell, type the following in order to setup the project.
+
+```
+git clone https://github.com/AKeyNo/my-reading-reviews.git
+cd my-reading-reviews
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fill out the ".env.local example" file and rename the file name to ".env.local".
+After this, type in the following command to run it.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+npm run dev
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+After running these commands, it will be on http://localhost:3000/.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Docker Installation
 
-## Learn More
+In your favorite shell, type the following in order.
 
-To learn more about Next.js, take a look at the following resources:
+```
+git clone https://github.com/AKeyNo/my-reading-reviews.git
+cd my-reading-reviews
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Fill out the ".env.local example" file and rename the file name to ".env.local".
+After this, type in the following commands.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+docker build -t my-reading-reviews .
+docker run --env-file ./.env.local -p 3000:3000 my-reading-reviews
+```
 
-## Deploy on Vercel
+After running these commands, it will be on http://localhost:3000/.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+My Reading Reviews is released under the MIT License. Check the [LICENSE](https://github.com/AKeyNo/my-reading-reviews/blob/main/LICENSE) file for more information.
