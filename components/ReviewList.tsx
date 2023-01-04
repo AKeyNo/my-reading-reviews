@@ -1,6 +1,5 @@
-import { useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { useEffect, useRef, useState } from 'react';
-import supabase from '../client';
 import { Database } from '../types/supabase';
 import { Review } from './Review';
 
@@ -9,6 +8,7 @@ interface Props {
 }
 
 export const ReviewList = ({ id }: Props): JSX.Element => {
+  const supabase = useSupabaseClient();
   const user = useUser();
   const [reviews, setReviews] = useState(
     [] as (Omit<Database['public']['Tables']['read_list']['Row'], 'user_id'> & {
@@ -27,7 +27,9 @@ export const ReviewList = ({ id }: Props): JSX.Element => {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const { data, error, status } = await supabase
+      if (!supabase) return;
+
+      const { data, error } = await supabase
         .from('read_list')
         .select('*, user_id (username, avatar_url)')
         .lte('review_post_time', initialReviewLoadTime)
@@ -35,19 +37,18 @@ export const ReviewList = ({ id }: Props): JSX.Element => {
 
       if (!data || error) return;
 
-      // @ts-ignore
       setReviews(data);
     };
 
     fetchReviews();
-  }, [initialReviewLoadTime]);
+  }, [initialReviewLoadTime, supabase, id]);
 
   const submitReview = async () => {
     window.event?.preventDefault();
 
     if (!reviewRef.current?.value || !user) return;
 
-    const { data, error } = await supabase.from('read_list').upsert([
+    const { error } = await supabase.from('read_list').upsert([
       {
         user_id: user.id,
         book_id: id,

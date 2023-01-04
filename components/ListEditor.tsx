@@ -1,7 +1,6 @@
-import { useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import { X } from 'phosphor-react';
-import supabase from '../client';
 import { ListEditorFields } from '../types/listEditor';
 
 export const ListEditor = ({
@@ -11,6 +10,7 @@ export const ListEditor = ({
   closeListEditor,
   setIsInformationOnline,
 }: ListEditorFields) => {
+  const supabase = useSupabaseClient();
   const user = useUser();
   const {
     status,
@@ -27,7 +27,7 @@ export const ListEditor = ({
 
     if (!user) return;
 
-    const { data, error } = await supabase.from('read_list').upsert([
+    const { error } = await supabase.from('read_list').upsert([
       {
         user_id: user.id,
         book_id: userBookInformation.book_id,

@@ -4,6 +4,8 @@ import { Wrapper } from '../components/Wrapper';
 import { AuthErrors, AuthFields } from '../types/auth';
 import { useRouter } from 'next/router';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { GetServerSidePropsContext } from 'next';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 export default function SignUp() {
   const router = useRouter();
@@ -241,21 +243,24 @@ export default function SignUp() {
   );
 }
 
-// export const getServerSideProps = async () => {
-//   // if there is already a user logged in, redirect to home page
-//   const {
-//     data: { session },
-//   } = await supabase.auth.getSession();
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const supabase = createServerSupabaseClient(context);
+  // if there is already a user logged in, redirect to home page
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-//   if (session)
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       },
-//     };
+  if (session)
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
 
-//   return {
-//     props: {},
-//   };
-// };
+  return {
+    props: {},
+  };
+};

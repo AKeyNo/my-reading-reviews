@@ -1,22 +1,15 @@
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Wrapper } from '../components/Wrapper';
 import { AuthErrors, AuthFields } from '../types/auth';
 
 export default function SignIn() {
-  const router = useRouter();
   const supabase = useSupabaseClient();
-  const user = useUser();
   const [userFields, setUserFields] = useState<AuthFields>({} as AuthFields);
   const [errors, setErrors] = useState<AuthErrors>({} as AuthErrors);
-
-  useEffect(() => {
-    if (user) {
-      router.replace('/');
-    }
-  }, [user]);
 
   const signInSubmit = async () => {
     window.event?.preventDefault();
@@ -36,7 +29,7 @@ export default function SignIn() {
     }
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: userFields.email!,
         password: userFields.password!,
       });
@@ -133,21 +126,24 @@ export default function SignIn() {
   );
 }
 
-// export const getServerSideProps = async () => {
-//   // if there is already a user logged in, redirect to home page
-//   const {
-//     data: { session },
-//   } = await supabase.auth.getSession();
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const supabase = createServerSupabaseClient(context);
+  // if there is already a user logged in, redirect to home page
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-//   if (session)
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       },
-//     };
+  if (session)
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
 
-//   return {
-//     props: {},
-//   };
-// };
+  return {
+    props: {},
+  };
+};
