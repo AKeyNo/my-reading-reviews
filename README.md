@@ -13,6 +13,9 @@ Create a blank new project.
 
 Copy the init.sql file under ./sql/init.sql into the SQL Editor.
 
+Keep track of your Project URL and your anon public key which is found under Project Settings and then API.
+You will put this under your .env.local file later.
+
 Choose either the normal installation or the Docker installation below to continue.
 
 ## Normal Installation
@@ -26,6 +29,8 @@ npm install
 ```
 
 Fill out the ".env.local example" file and rename the file name to ".env.local".
+Input the Project URL key and the anon public key from earlier under their respective places.
+Set up a [Google Books APIs key](https://developers.google.com/books/docs/v1/using) and input your API Key in the .env_local file.
 After this, type in the following command to run it.
 
 ```
@@ -44,6 +49,8 @@ cd my-reading-reviews
 ```
 
 Fill out the ".env.local example" file and rename the file name to ".env.local".
+Input the Project URL key and the anon public key from earlier under their respective places.
+Set up a [Google Books APIs key](https://developers.google.com/books/docs/v1/using) and input your API Key in the .env_local file.
 After this, type in the following commands.
 
 ```
