@@ -5,6 +5,15 @@ A book tracker using the Google Books API where users are able to keep track of 
 ## Prerequisites
 
 Make sure that you have installed [Git](https://git-scm.com/) and [Node.js](https://nodejs.org/en/).
+A [Supabase](https://supabase.com/) account is required.
+
+## Supabase Setup
+
+Create a blank new project.
+
+Copy the init.sql file under ./sql/init.sql into the SQL Editor.
+
+Choose either the normal installation or the Docker installation below to continue.
 
 ## Normal Installation
 

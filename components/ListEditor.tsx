@@ -90,6 +90,7 @@ export const ListEditor = ({
             <option value='Planning to Read'>Planning to Read</option>
             <option value='Completed'>Completed</option>
             <option value='Paused'>Paused</option>
+            <option value='Dropped'>Dropped</option>
           </select>
         </div>
 
