@@ -4,7 +4,6 @@ import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Wrapper } from '../components/Wrapper';
 import { AuthErrors, AuthFields } from '../types/auth';
 
 export default function SignIn() {
@@ -58,75 +57,73 @@ export default function SignIn() {
   };
 
   return (
-    <Wrapper>
-      <div className='flex flex-col items-center w-1/2 p-12 mx-auto mt-12 bg-gray-800 rounded-2xl'>
-        <h1 className='text-2xl font-bold'>Sign In</h1>
-        <form
-          className='flex flex-col items-center justify-center w-11/12 mt-4'
-          onSubmit={signInSubmit}
+    <div className='flex flex-col items-center w-1/2 p-12 mx-auto mt-12 bg-gray-800 rounded-2xl'>
+      <h1 className='text-2xl font-bold'>Sign In</h1>
+      <form
+        className='flex flex-col items-center justify-center w-11/12 mt-4'
+        onSubmit={signInSubmit}
+      >
+        <div className='flex-auto w-2/3 max-w-md mb-1 min-w-fit'>
+          <label className='block text-sm font-semibold text-white'>
+            Email
+          </label>
+          <input
+            className={`w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline duration-200 ${
+              errors.emailError ? 'border-red-500' : ''
+            }`}
+            type='email'
+            placeholder='Email'
+            onChange={(e) => {
+              setUserFields({
+                ...userFields,
+                email: e.target.value,
+              } as AuthFields);
+              setErrors((previousErrors) => ({
+                ...previousErrors,
+                emailError: '',
+              }));
+            }}
+            data-cy='email-input'
+          />
+          <p className='text-red-500'>{errors.emailError}&nbsp;</p>
+        </div>
+
+        <div className='flex-auto w-2/3 max-w-md mb-1 min-w-fit'>
+          <label className='block mb-2 text-sm font-semibold text-white'>
+            Password
+          </label>
+          <input
+            className={`w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline duration-200 ${
+              errors.passwordError ? 'border-red-500' : ''
+            }`}
+            type='password'
+            placeholder='Password'
+            onChange={(e) => {
+              setUserFields({
+                ...userFields,
+                password: e.target.value,
+              } as AuthFields);
+            }}
+            data-cy='password-input'
+          />
+          <p className='text-red-500'>{errors.passwordError}&nbsp;</p>
+        </div>
+        <button
+          className='p-4 px-12 mt-4 duration-200 bg-orange-700 rounded-md hover:bg-orange-800'
+          type='submit'
+          data-cy='sign-in-submit-button'
         >
-          <div className='flex-auto w-2/3 max-w-md mb-1 min-w-fit'>
-            <label className='block text-sm font-semibold text-white'>
-              Email
-            </label>
-            <input
-              className={`w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline duration-200 ${
-                errors.emailError ? 'border-red-500' : ''
-              }`}
-              type='email'
-              placeholder='Email'
-              onChange={(e) => {
-                setUserFields({
-                  ...userFields,
-                  email: e.target.value,
-                } as AuthFields);
-                setErrors((previousErrors) => ({
-                  ...previousErrors,
-                  emailError: '',
-                }));
-              }}
-              data-cy='email-input'
-            />
-            <p className='text-red-500'>{errors.emailError}&nbsp;</p>
-          </div>
+          Sign In
+        </button>
 
-          <div className='flex-auto w-2/3 max-w-md mb-1 min-w-fit'>
-            <label className='block mb-2 text-sm font-semibold text-white'>
-              Password
-            </label>
-            <input
-              className={`w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline duration-200 ${
-                errors.passwordError ? 'border-red-500' : ''
-              }`}
-              type='password'
-              placeholder='Password'
-              onChange={(e) => {
-                setUserFields({
-                  ...userFields,
-                  password: e.target.value,
-                } as AuthFields);
-              }}
-              data-cy='password-input'
-            />
-            <p className='text-red-500'>{errors.passwordError}&nbsp;</p>
-          </div>
-          <button
-            className='p-4 px-12 mt-4 duration-200 bg-orange-700 rounded-md hover:bg-orange-800'
-            type='submit'
-            data-cy='sign-in-submit-button'
-          >
-            Sign In
-          </button>
-
-          <p className='mt-24 text-white'>
-            Don&apos;t have an account?{' '}
-            <Link href='/signup' className='font-semibold text-blue-300'>
-              Sign Up
-            </Link>
-          </p>
-        </form>
-      </div>
-    </Wrapper>
+        <p className='mt-24 text-white'>
+          Don&apos;t have an account?{' '}
+          <Link href='/signup' className='font-semibold text-blue-300'>
+            Sign Up
+          </Link>
+        </p>
+      </form>
+    </div>
   );
 }
 

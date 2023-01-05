@@ -1,13 +1,12 @@
 import { useSession } from '@supabase/auth-helpers-react';
 import Head from 'next/head';
 import { AuthButtons } from '../components/AuthButtons';
-import { Wrapper } from '../components/Wrapper';
 
 export default function Home() {
   const session = useSession();
 
   return (
-    <Wrapper>
+    <>
       <Head>
         <title>My Book Reviews - Keep track of your readings easily.</title>
       </Head>
@@ -18,6 +17,6 @@ export default function Home() {
         </h3>
         {!session ? <AuthButtons /> : null}
       </div>
-    </Wrapper>
+    </>
   );
 }

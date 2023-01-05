@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Wrapper } from '../../components/Wrapper';
 import parse from 'html-react-parser';
 import Image from 'next/image';
 import { useUser } from '@supabase/auth-helpers-react';
@@ -60,7 +59,7 @@ export default function BookPage() {
   if (!book) return <div>loading...</div>;
 
   return (
-    <Wrapper>
+    <div>
       <div className='grid grid-cols-4 grid-rows-1 p-12 border-b-4 border-gray-800'>
         <div className='relative col-span-1 mr-4 text-center'>
           <Image
@@ -105,6 +104,6 @@ export default function BookPage() {
         </div>
         <ReviewList id={id as string} />
       </div>
-    </Wrapper>
+    </div>
   );
 }

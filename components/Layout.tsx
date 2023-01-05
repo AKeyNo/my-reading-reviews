@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import { Footer } from './Footer';
 import { Header } from './Header';
 
-export const Wrapper: React.FC<PropsWithChildren<any>> = ({ children }) => {
+export const Layout: React.FC<PropsWithChildren<any>> = ({ children }) => {
   return (
     <div className='flex flex-col min-h-screen'>
       <Header />
