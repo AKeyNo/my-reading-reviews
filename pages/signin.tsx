@@ -2,11 +2,13 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Wrapper } from '../components/Wrapper';
 import { AuthErrors, AuthFields } from '../types/auth';
 
 export default function SignIn() {
+  const router = useRouter();
   const supabase = useSupabaseClient();
   const [userFields, setUserFields] = useState<AuthFields>({} as AuthFields);
   const [errors, setErrors] = useState<AuthErrors>({} as AuthErrors);
@@ -35,6 +37,8 @@ export default function SignIn() {
       });
 
       if (error) throw error;
+
+      router.push('/');
     } catch (error: any) {
       console.error('error', error);
       if (error.message.includes('Email')) {

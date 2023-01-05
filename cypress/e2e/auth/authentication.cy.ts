@@ -1,6 +1,6 @@
 describe('sign up process', () => {
   // put a invalid password, invalid confirm password, and finally submit the form
-  it('should sign up a new user and log in', () => {
+  it('should sign up a new user and log in and then sign out', () => {
     const username = `username${Math.random().toString(36).substring(2, 10)}`;
     const correctPassword = 'what makes a good password? this?';
 
@@ -29,6 +29,19 @@ describe('sign up process', () => {
     cy.get('[data-cy="confirm-password-error"]').should('have.value', '');
 
     cy.get('[data-cy="sign-up-submit-button"]').click();
+    cy.url().should('eq', `${Cypress.config().baseUrl}`);
+    cy.get('[data-cy="hello-message"]').contains(`Hello ${username}!`);
+    cy.get('[data-cy="sign-out-button"]').click();
+
+    cy.get('[data-cy="hello-message"]').contains(
+      `Hello! You are currently not signed in.`
+    );
+  });
+
+  it('should be able to sign in to the default user provided in the env', () => {
+    const username = 'juliuscaesar';
+
+    cy.signIn(username);
     cy.url().should('eq', `${Cypress.config().baseUrl}`);
     cy.get('[data-cy="hello-message"]').contains(`Hello ${username}!`);
   });
