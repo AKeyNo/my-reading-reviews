@@ -4,6 +4,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       signIn(username: string): Chainable<void>;
+      signOut(): Chainable<void>;
     }
   }
 }
@@ -17,6 +18,11 @@ Cypress.Commands.add('signIn', (username: string) => {
     Cypress.env(`${username}_PASSWORD`)
   );
   cy.get('[data-cy="sign-in-submit-button"]').click();
+});
+
+Cypress.Commands.add('signOut', () => {
+  // sign out button should be available on any page at the top
+  cy.get('[data-cy="sign-out-button"]').click();
 });
 
 export {};

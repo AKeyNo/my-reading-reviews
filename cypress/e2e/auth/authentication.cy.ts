@@ -38,12 +38,16 @@ describe('sign up process', () => {
     );
   });
 
-  it('should be able to sign in to the default user provided in the env', () => {
+  it('should be able to sign in to the default user provided in the env and then sign out', () => {
     const username = 'juliuscaesar';
 
     cy.signIn(username);
     cy.url().should('eq', `${Cypress.config().baseUrl}`);
     cy.get('[data-cy="hello-message"]').contains(`Hello ${username}!`);
+    cy.signOut();
+    cy.get('[data-cy="hello-message"]').contains(
+      `Hello! You are currently not signed in.`
+    );
   });
 });
 
