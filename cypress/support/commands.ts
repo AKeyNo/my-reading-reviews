@@ -22,6 +22,7 @@ Cypress.Commands.add('signIn', (username: string) => {
 
 Cypress.Commands.add('signOut', () => {
   // sign out button should be available on any page at the top
+  cy.get('[data-cy="user-menu"]').trigger('mouseover');
   cy.get('[data-cy="sign-out-button"]').click();
 });
 

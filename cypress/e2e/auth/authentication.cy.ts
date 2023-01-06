@@ -30,12 +30,12 @@ describe('sign up process', () => {
 
     cy.get('[data-cy="sign-up-submit-button"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}`);
-    cy.get('[data-cy="hello-message"]').contains(`Hello ${username}!`);
+    cy.get('[data-cy="user-menu-username"]').contains(`${username}`);
+    cy.get('[data-cy="user-menu"]').trigger('mouseover');
     cy.get('[data-cy="sign-out-button"]').click();
 
-    cy.get('[data-cy="hello-message"]').contains(
-      `Hello! You are currently not signed in.`
-    );
+    cy.get('[data-cy="sign-in-link"]').contains('Sign In');
+    cy.get('[data-cy="sign-up-link"]').contains('Sign Up');
   });
 
   it('should be able to sign in to the default user provided in the env and then sign out', () => {
@@ -43,11 +43,10 @@ describe('sign up process', () => {
 
     cy.signIn(username);
     cy.url().should('eq', `${Cypress.config().baseUrl}`);
-    cy.get('[data-cy="hello-message"]').contains(`Hello ${username}!`);
+    cy.get('[data-cy="user-menu-username"]').contains(`${username}`);
     cy.signOut();
-    cy.get('[data-cy="hello-message"]').contains(
-      `Hello! You are currently not signed in.`
-    );
+    cy.get('[data-cy="sign-in-link"]').contains('Sign In');
+    cy.get('[data-cy="sign-up-link"]').contains('Sign Up');
   });
 });
 
