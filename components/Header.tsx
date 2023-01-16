@@ -50,7 +50,7 @@ export const Header = () => {
         </section>
       </div>
       {user ? (
-        <button
+        <div
           className='relative flex items-center h-full ml-auto space-x-2 text-blue-500 duration-200 cursor-pointer hover:text-blue-400 group'
           onMouseOver={() => setIsShowingUserMenu(true)}
           onMouseLeave={() => setIsShowingUserMenu(false)}
@@ -92,7 +92,7 @@ export const Header = () => {
               <p>Logout</p>
             </button>
           </div>
-        </button>
+        </div>
       ) : (
         <div className='flex ml-auto space-x-2 text-blue-500'>
           <Link
