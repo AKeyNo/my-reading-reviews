@@ -1,26 +1,44 @@
+import axios from 'axios';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export default function SearchBook() {
   const router = useRouter();
 
-  const [searchBookName, setSearchBookName] = useState<string | null>();
+  const [searchTitle, setSearchTitle] = useState<string | null>();
   const [searchAuthor, setSearchAuthor] = useState<string | null>();
   const [searchPublisher, setSearchPublisher] = useState<string | null>();
 
-  // const [books, setBooks] = useState([] as any);
+  // const [loading, setLoading] = useState(false);
+
+  const [books, setBooks] = useState([] as any);
+
+  useEffect(() => {
+    if (Object.keys(router.query).length === 0) return;
+
+    const fetchBooks = async () => {
+      const response = await axios.get('/api/search/book', {
+        params: router.query,
+      });
+
+      setBooks(response.data.items);
+    };
+    fetchBooks();
+  }, [router.query]);
 
   // searches for books with the given the book name, author, and/or publisher
   // does so by debouncing the search
   useEffect(() => {
     const areParametersEmpty = () => {
-      return !searchBookName && !searchAuthor && !searchPublisher;
+      return !searchTitle && !searchAuthor && !searchPublisher;
     };
 
     // checks if the search parameters match up with the queries to prevent unnecessary searches
     const areParametersEqual = () => {
       return (
-        searchBookName === router.query.search &&
+        searchTitle === router.query.title &&
         searchAuthor === router.query.author &&
         searchPublisher === router.query.publisher
       );
@@ -35,7 +53,7 @@ export default function SearchBook() {
 
       // only include queries that are not empty
       let query = {};
-      if (searchBookName) query = { search: searchBookName };
+      if (searchTitle) query = { title: searchTitle };
       if (searchAuthor) query = { ...query, author: searchAuthor };
       if (searchPublisher) query = { ...query, publisher: searchPublisher };
 
@@ -46,7 +64,7 @@ export default function SearchBook() {
     }, 1000);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchBookName, searchAuthor, searchPublisher, router]);
+  }, [searchTitle, searchAuthor, searchPublisher, router]);
 
   return (
     <div>
@@ -57,7 +75,7 @@ export default function SearchBook() {
             className='w-full p-2 mt-4 bg-gray-700 rounded-md'
             type='text'
             placeholder=''
-            onChange={(e) => setSearchBookName(e.target.value)}
+            onChange={(e) => setSearchTitle(e.target.value)}
           />
         </div>
         <div className='w-4/12'>
@@ -80,16 +98,26 @@ export default function SearchBook() {
         </div>
       </form>
 
-      <div className='grid grid-cols-3 grid-rows-3'>
-        <div className='p-4 bg-slate-900'></div>
-        <div className='p-4 bg-slate-800'></div>
-        <div className='p-4 bg-slate-700'></div>
-        <div className='p-4 bg-slate-600'></div>
-        <div className='p-4 bg-slate-500'></div>
-        <div className='p-4 bg-slate-400'></div>
-        <div className='p-4 bg-slate-300'></div>
-        <div className='p-4 bg-slate-200'></div>
-        <div className='p-4 bg-slate-100'></div>
+      <div className='grid grid-cols-5 gap-x-4'>
+        {books.map((book: any, key: any) => (
+          <div key={key} className='flex flex-col p-4 h-[21rem]'>
+            <Link href={`/book/${book.id}`} passHref>
+              <Image
+                alt={book.volumeInfo.title || 'Missing Book Name'}
+                src={book.volumeInfo.imageLinks?.thumbnail}
+                width={200}
+                height={200}
+                className='w-full h-64 border-2 border-white'
+              />
+            </Link>
+            <a
+              href={`/book/${book.id}`}
+              className='block truncate hover:whitespace-normal'
+            >
+              {book.volumeInfo.title}
+            </a>
+          </div>
+        ))}
       </div>
     </div>
   );
