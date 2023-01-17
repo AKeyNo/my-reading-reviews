@@ -8,6 +8,7 @@ import { Dialog } from '../../components/Dialog';
 import { ListEditor } from '../../components/ListEditor';
 import { Database } from '../../types/supabase';
 import { ReviewList } from '../../components/ReviewList';
+import Loading from '../../components/Loading';
 
 export default function BookPage() {
   const user = useUser();
@@ -56,7 +57,7 @@ export default function BookPage() {
     fetchBook();
   }, [id, user]);
 
-  if (!book) return <div>loading...</div>;
+  if (!book) return <Loading />;
 
   return (
     <div>

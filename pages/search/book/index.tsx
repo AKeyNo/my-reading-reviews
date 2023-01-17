@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Loading from '../../../components/Loading';
 import { useScroll } from '../../../hooks/useScroll';
 
 export default function SearchBook() {
@@ -12,10 +13,12 @@ export default function SearchBook() {
   const [searchAuthor, setSearchAuthor] = useState<string | null>();
   const [searchPublisher, setSearchPublisher] = useState<string | null>();
   const [startIndex, setStartIndex] = useState(0);
-
   const [books, setBooks] = useState([] as any);
 
+  const [loading, setLoading] = useState(false);
+
   const loadMoreBooks = async () => {
+    setLoading(true);
     setStartIndex(startIndex + 1);
 
     const response = await axios.get('/api/search/book', {
@@ -23,10 +26,11 @@ export default function SearchBook() {
     });
 
     if (response.data.totalItems === 0) {
-      return;
+      return setLoading(false);
     }
 
     setBooks([...books, ...response.data.items]);
+    setLoading(false);
   };
 
   useScroll(loadMoreBooks);
@@ -35,15 +39,17 @@ export default function SearchBook() {
     if (Object.keys(router.query).length === 0) return;
 
     const fetchBooks = async () => {
+      setLoading(true);
       const response = await axios.get('/api/search/book', {
         params: { ...router.query, startIndex: 0 },
       });
 
       if (response.data.totalItems === 0) {
-        return;
+        return setLoading(false);
       }
 
       setBooks(response.data.items);
+      setLoading(false);
     };
     fetchBooks();
   }, [router.query]);
@@ -139,6 +145,8 @@ export default function SearchBook() {
           </div>
         ))}
       </div>
+
+      {loading && <Loading />}
     </div>
   );
 }
