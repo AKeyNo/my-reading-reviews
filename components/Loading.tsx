@@ -1,8 +1,16 @@
 import { CircleNotch } from 'phosphor-react';
 
-const Loading = (): JSX.Element => {
+interface Props {
+  hScreen?: boolean;
+}
+
+const Loading = ({ hScreen }: Props): JSX.Element => {
   return (
-    <div className='flex items-center justify-center h-screen'>
+    <div
+      className={`flex items-center justify-center ${
+        hScreen ? 'h-screen' : 'm-4'
+      }`}
+    >
       <CircleNotch size={32} weight='fill' className='animate-spin' />
     </div>
   );

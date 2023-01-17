@@ -57,7 +57,7 @@ export default function BookPage() {
     fetchBook();
   }, [id, user]);
 
-  if (!book) return <Loading />;
+  if (!book) return <Loading hScreen={true} />;
 
   return (
     <div>
