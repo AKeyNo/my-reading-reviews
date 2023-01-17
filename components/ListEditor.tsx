@@ -65,13 +65,16 @@ export const ListEditor = ({
       </button>
 
       <div className='flex items-center w-full'>
-        <Image
-          src={book.imageLinks.smallThumbnail}
-          alt={book.name || 'Missing Book Name'}
-          width={100}
-          height={100}
-          className='inline w-24 mr-4 rounded-md basis-1/12'
-        />
+        {book.imageLinks && (
+          <Image
+            src={book.imageLinks.smallThumbnail}
+            alt={book.name || 'Missing Book Name'}
+            width={100}
+            height={100}
+            className='inline w-24 mr-4 rounded-md basis-1/12'
+          />
+        )}
+
         <p className='font-semibold basis-10/12'>{book.title}</p>
       </div>
       <div className='grid grid-cols-3 gap-2 py-2'>

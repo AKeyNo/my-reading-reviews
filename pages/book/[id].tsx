@@ -62,13 +62,16 @@ export default function BookPage() {
     <div>
       <div className='grid grid-cols-4 grid-rows-1 p-12 border-b-4 border-gray-800'>
         <div className='relative col-span-1 mr-4 text-center'>
-          <Image
-            src={book.imageLinks.thumbnail}
-            alt={book.name || 'Missing Book Name'}
-            width={200}
-            height={300}
-            className='w-48 mx-auto rounded-md'
-          />
+          {book.imageLinks && (
+            <Image
+              src={book.imageLinks.thumbnail}
+              alt={book.name || 'Missing Book Name'}
+              width={200}
+              height={300}
+              className='w-48 mx-auto rounded-md'
+            />
+          )}
+
           {user ? (
             <button
               onClick={() => setIsShowingListEditor(true)}
@@ -89,7 +92,7 @@ export default function BookPage() {
         </Dialog>
         <div className='col-span-3'>
           <h1 className='pb-4 text-3xl'>{book.title}</h1>
-          <p>{parse(book.description)}</p>
+          <p>{book.description && parse(book.description)}</p>
         </div>
       </div>
       <div className='grid grid-cols-4 grid-rows-1 gap-4 p-12 border-t-0 flow-col'>

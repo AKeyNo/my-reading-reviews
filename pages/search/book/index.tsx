@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useScroll } from '../../../hooks/useScroll';
 
 export default function SearchBook() {
   const router = useRouter();
@@ -10,18 +11,37 @@ export default function SearchBook() {
   const [searchTitle, setSearchTitle] = useState<string | null>();
   const [searchAuthor, setSearchAuthor] = useState<string | null>();
   const [searchPublisher, setSearchPublisher] = useState<string | null>();
-
-  // const [loading, setLoading] = useState(false);
+  const [startIndex, setStartIndex] = useState(0);
 
   const [books, setBooks] = useState([] as any);
+
+  const loadMoreBooks = async () => {
+    setStartIndex(startIndex + 1);
+
+    const response = await axios.get('/api/search/book', {
+      params: { ...router.query, startIndex },
+    });
+
+    if (response.data.totalItems === 0) {
+      return;
+    }
+
+    setBooks([...books, ...response.data.items]);
+  };
+
+  useScroll(loadMoreBooks);
 
   useEffect(() => {
     if (Object.keys(router.query).length === 0) return;
 
     const fetchBooks = async () => {
       const response = await axios.get('/api/search/book', {
-        params: router.query,
+        params: { ...router.query, startIndex: 0 },
       });
+
+      if (response.data.totalItems === 0) {
+        return;
+      }
 
       setBooks(response.data.items);
     };
@@ -99,7 +119,7 @@ export default function SearchBook() {
       </form>
 
       <div className='grid grid-cols-5 gap-x-4'>
-        {books.map((book: any, key: any) => (
+        {books?.map((book: any, key: any) => (
           <div key={key} className='flex flex-col p-4 h-[21rem]'>
             <Link href={`/book/${book.id}`} passHref>
               <Image
