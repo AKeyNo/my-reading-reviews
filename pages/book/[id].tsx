@@ -63,15 +63,13 @@ export default function BookPage() {
     <div>
       <div className='grid grid-cols-4 grid-rows-1 p-12 border-b-4 border-gray-800'>
         <div className='relative col-span-1 mr-4 text-center'>
-          {book.imageLinks && (
-            <Image
-              src={book.imageLinks.thumbnail}
-              alt={book.name || 'Missing Book Name'}
-              width={200}
-              height={300}
-              className='w-48 mx-auto rounded-md'
-            />
-          )}
+          <Image
+            src={book.imageLinks?.thumbnail || '/missingBookImage.png'}
+            alt={book.name || 'Missing Book Name'}
+            width={200}
+            height={300}
+            className='w-48 mx-auto rounded-md'
+          />
 
           {user ? (
             <button

@@ -130,7 +130,10 @@ export default function SearchBook() {
             <Link href={`/book/${book.id}`} passHref>
               <Image
                 alt={book.volumeInfo.title || 'Missing Book Name'}
-                src={book.volumeInfo.imageLinks?.thumbnail}
+                src={
+                  book.volumeInfo.imageLinks?.thumbnail ||
+                  '/missingBookImage.png'
+                }
                 width={200}
                 height={200}
                 className='w-full h-64 border-2 border-white'
