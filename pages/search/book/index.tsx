@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { Card } from '../../../components/Card';
 import Loading from '../../../components/Loading';
 import { useScroll } from '../../../hooks/useScroll';
 
@@ -134,18 +135,20 @@ export default function SearchBook() {
 
       <div className='grid grid-cols-5 gap-x-4'>
         {books?.map((book: any, key: any) => (
-          <div key={key} className='flex flex-col p-4 h-[21rem]'>
+          <div key={key} className='flex flex-col p-4 h-[23rem]'>
             <Link href={`/book/${book.id}`} passHref>
-              <Image
-                alt={book.volumeInfo.title || 'Missing Book Name'}
-                src={
-                  book.volumeInfo.imageLinks?.thumbnail ||
-                  '/missingBookImage.png'
-                }
-                width={200}
-                height={200}
-                className='w-full h-64 border-2 border-white'
-              />
+              <Card>
+                <Image
+                  alt={book.volumeInfo.title || 'Missing Book Name'}
+                  src={
+                    book.volumeInfo.imageLinks?.thumbnail ||
+                    '/missingBookImage.png'
+                  }
+                  width={200}
+                  height={200}
+                  className='w-full h-64 border-2 border-white'
+                />
+              </Card>
             </Link>
             <a
               href={`/book/${book.id}`}

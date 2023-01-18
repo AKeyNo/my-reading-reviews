@@ -9,6 +9,7 @@ import { ListEditor } from '../../components/ListEditor';
 import { Database } from '../../types/supabase';
 import { ReviewList } from '../../components/ReviewList';
 import Loading from '../../components/Loading';
+import { Card } from '../../components/Card';
 
 export default function BookPage() {
   const user = useUser();
@@ -91,11 +92,13 @@ export default function BookPage() {
         </Dialog>
         <div className='col-span-3'>
           <h1 className='pb-4 text-3xl'>{book.title}</h1>
-          <p>{book.description && parse(book.description)}</p>
+          <Card>
+            <p>{book.description && parse(book.description)}</p>
+          </Card>
         </div>
       </div>
       <div className='grid grid-cols-4 grid-rows-1 gap-4 p-12 border-t-0 flow-col'>
-        <div className='col-span-1 p-4 bg-gray-800 rounded-md'>
+        <Card colSpan='col-span-1'>
           <h2 className='font-semibold'>Stats</h2>
           <p>Page Count: {book.pageCount}</p>
           <p>Published: {book.publishedDate}</p>
@@ -103,7 +106,7 @@ export default function BookPage() {
             Average Rating: {book.averageRating} ({book.ratingsCount} total
             rating{book.ratingsCount > 1 ? 's' : ''})
           </p>
-        </div>
+        </Card>
         <ReviewList id={id as string} />
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { Card } from '../../components/Card';
 
 export default function UserPage() {
   const router = useRouter();
@@ -57,20 +58,20 @@ export default function UserPage() {
 
   return (
     <div className='grid grid-flow-col grid-cols-12 gap-4'>
-      <div className='h-full col-span-3'>
-        <div className='w-full bg-slate-500'>{user?.username}</div>
+      <div className='flex flex-col h-full col-span-3 gap-4'>
+        <Card>{user?.username}</Card>
         {user && (
-          <div className='w-full bg-slate-600'>
+          <Card>
             <p>Total Books: {user?.read_list?.length}</p>
             <p>Books Read: {totalBooksFinished()}</p>
             <p>Pages Read: {totalPagesRead()}</p>
             <p>Average Score: {averageScore()}</p>
-          </div>
+          </Card>
         )}
       </div>
-      <div className='h-full col-span-9'>
-        <div className='w-full bg-slate-700'>{user?.summary}</div>
-        <div className='w-full bg-slate-800'>Latest Activity</div>
+      <div className='flex flex-col h-full col-span-9 gap-4'>
+        <Card>{user?.summary}</Card>
+        <Card>Latest Activity</Card>
       </div>
     </div>
   );
