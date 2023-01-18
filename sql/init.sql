@@ -33,6 +33,12 @@ create table read_list (
     constraint times_read_check check (times_read >= 0)
 );
 
+-- Create a table for cached book covers
+create table book_images (
+    book_id not null primary key,
+    url text
+);
+
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/auth/row-level-security for more details.
 alter table profiles
@@ -59,6 +65,17 @@ create policy "Users can create entries for their own book list" on read_list
 create policy "Users can edit their own book list" on read_list
   for update using (uid() = user_id);
 
+alter table book_images
+  enable row level security;
+
+create policy "Book images are viewable by everyone." on book_images
+  for select using (true);
+
+create policy "Enable insert for users only"
+  for insert using (true);
+
+create policy "Enable update for users only"
+  for update using (true);
 
 -- This trigger automatically creates a profile entry when a new user signs up via Supabase Auth.
 -- See https://supabase.com/docs/guides/auth/managing-user-data#using-triggers for more details.

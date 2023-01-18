@@ -27,7 +27,7 @@ export const ListEditor = ({
 
     if (!user) return;
 
-    const { error } = await supabase.from('read_list').upsert([
+    const { error: uploadError } = await supabase.from('read_list').upsert([
       {
         user_id: user.id,
         book_id: userBookInformation.book_id,
@@ -41,8 +41,21 @@ export const ListEditor = ({
         favorite: userBookInformation.favorite,
       },
     ]);
-    if (error) {
-      console.error('error', error);
+    if (uploadError) {
+      console.error('error', uploadError);
+    }
+
+    // cache the book image to save on querying too many times from Google Books API
+    // this is used in displaying favorites and recently read book titles
+    const { error: cacheError } = await supabase.from('book_images').upsert([
+      {
+        book_id: userBookInformation.book_id,
+        url: book.imageLinks?.smallThumbnail,
+      },
+    ]);
+
+    if (cacheError) {
+      console.error('error', cacheError);
     }
 
     setIsInformationOnline();
