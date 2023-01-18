@@ -36,10 +36,16 @@ export default function SearchBook() {
   useScroll(loadMoreBooks);
 
   useEffect(() => {
+    setBooks([]);
     if (Object.keys(router.query).length === 0) return;
 
     const fetchBooks = async () => {
       setLoading(true);
+
+      setSearchTitle(router.query.title as string);
+      setSearchAuthor(router.query.author as string);
+      setSearchPublisher(router.query.publisher as string);
+
       const response = await axios.get('/api/search/book', {
         params: { ...router.query, startIndex: 0 },
       });
@@ -70,7 +76,9 @@ export default function SearchBook() {
       );
     };
 
-    if (areParametersEmpty() && Object.keys(router.query).length === 0) return;
+    if (areParametersEmpty() && Object.keys(router.query).length === 0)
+      return setBooks([]);
+
     if (areParametersEqual()) return;
 
     const delayDebounce = setTimeout(() => {
