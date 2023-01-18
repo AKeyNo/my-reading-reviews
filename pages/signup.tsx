@@ -115,7 +115,7 @@ export default function SignUp() {
   }, [userFields]);
 
   return (
-    <div className='flex flex-col items-center w-1/2 p-12 mx-auto mt-12 bg-gray-800 rounded-2xl'>
+    <div className='flex flex-col items-center w-1/2 p-12 mx-auto mt-4 bg-gray-800 rounded-2xl'>
       <h1 className='text-2xl font-bold'>Sign Up</h1>
       <form
         className='flex flex-col items-center justify-center w-11/12 mt-4'

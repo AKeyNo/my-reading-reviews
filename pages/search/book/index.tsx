@@ -103,7 +103,7 @@ export default function SearchBook() {
 
   return (
     <div>
-      <form className='flex flex-row items-center w-full mt-4 mb-2 space-x-2'>
+      <form className='flex flex-row items-center w-full mb-2 space-x-2'>
         <div className='w-4/12'>
           <label className='block font-bold text-gray-400'>Search</label>
           <input

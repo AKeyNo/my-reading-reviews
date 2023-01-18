@@ -31,7 +31,7 @@ export const Header = () => {
   }, [supabase, user]);
 
   return (
-    <header className='flex items-center h-14 bg-stone-900 px-72'>
+    <header className='flex items-center mb-4 h-14 bg-stone-900 px-72'>
       <div className='mr-4 text-xl font-semibold'>
         <Link href='/'>My Reading Reviews</Link>
       </div>
