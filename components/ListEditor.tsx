@@ -47,10 +47,12 @@ export const ListEditor = ({
 
     // cache the book image to save on querying too many times from Google Books API
     // this is used in displaying favorites and recently read book titles
-    const { error: cacheError } = await supabase.from('book_images').upsert([
+    const { error: cacheError } = await supabase.from('cached_books').upsert([
       {
         book_id: userBookInformation.book_id,
-        url: book.imageLinks?.smallThumbnail,
+        title: book.title,
+        cover: book.imageLinks?.smallThumbnail,
+        total_pages: book.pageCount,
       },
     ]);
 

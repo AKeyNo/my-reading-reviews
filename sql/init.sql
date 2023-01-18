@@ -34,9 +34,11 @@ create table read_list (
 );
 
 -- Create a table for cached book covers
-create table book_images (
+create table cached_books (
     book_id not null primary key,
-    url text
+    cover text,
+    title text,
+    total_pages smallint,
 );
 
 -- Set up Row Level Security (RLS)

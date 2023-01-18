@@ -9,21 +9,24 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      book_images: {
+      cached_books: {
         Row: {
           book_id: string
-          id: number
-          url: string | null
+          cover: string | null
+          title: string | null
+          total_pages: number | null
         }
         Insert: {
           book_id: string
-          id?: number
-          url?: string | null
+          cover?: string | null
+          title?: string | null
+          total_pages?: number | null
         }
         Update: {
           book_id?: string
-          id?: number
-          url?: string | null
+          cover?: string | null
+          title?: string | null
+          total_pages?: number | null
         }
       }
       profiles: {
