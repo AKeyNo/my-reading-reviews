@@ -11,72 +11,75 @@ export interface Database {
     Tables: {
       profiles: {
         Row: {
+          avatar_url: string | null;
+          full_name: string | null;
           id: string;
+          summary: string | null;
           updated_at: string | null;
           username: string | null;
-          full_name: string | null;
-          avatar_url: string | null;
           website: string | null;
         };
         Insert: {
+          avatar_url?: string | null;
+          full_name?: string | null;
           id: string;
+          summary?: string | null;
           updated_at?: string | null;
           username?: string | null;
-          full_name?: string | null;
-          avatar_url?: string | null;
           website?: string | null;
         };
         Update: {
+          avatar_url?: string | null;
+          full_name?: string | null;
           id?: string;
+          summary?: string | null;
           updated_at?: string | null;
           username?: string | null;
-          full_name?: string | null;
-          avatar_url?: string | null;
           website?: string | null;
         };
       };
       read_list: {
         Row: {
           book_id: string;
-          user_id: string;
+          favorite: boolean;
+          finish_date: string | null;
+          notes: string | null;
           pages_read: number | null;
-          score: number | null;
-          status: string | null;
           review: string | null;
           review_post_time: string | null;
-          favorite: boolean;
-          notes: string | null;
+          score: number | null;
           start_date: string | null;
-          finish_date: string | null;
+          status: string | null;
           times_read: number | null;
+          user_id: string;
         };
         Insert: {
           book_id: string;
-          user_id: string;
+          favorite?: boolean;
+          finish_date?: string | null;
+          notes?: string | null;
           pages_read?: number | null;
-          score?: number | null;
-          status?: string | null;
           review?: string | null;
           review_post_time?: string | null;
-          favorite?: boolean;
-          notes?: string | null;
+          score?: number | null;
           start_date?: string | null;
-          finish_date?: string | null;
+          status?: string | null;
           times_read?: number | null;
+          user_id: string;
         };
         Update: {
           book_id?: string;
-          user_id?: string;
+          favorite?: boolean;
+          finish_date?: string | null;
+          notes?: string | null;
           pages_read?: number | null;
-          score?: number | null;
-          status?: string | null;
           review?: string | null;
           review_post_time?: string | null;
-          favorite?: boolean;
-          notes?: string | null;
+          score?: number | null;
           start_date?: string | null;
-          finish_date?: string | null;
+          status?: string | null;
           times_read?: number | null;
+          user_id?: string;
         };
       };
     };
