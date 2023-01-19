@@ -78,7 +78,7 @@ export const ReviewList = ({ id }: Props): JSX.Element => {
           {showReviewCreation ? 'Close Review Form' : 'Create a review'}
         </button>
       </div>
-      {showReviewCreation ? (
+      {showReviewCreation && (
         <form
           onSubmit={submitReview}
           className='col-span-3 p-4 mb-4 bg-gray-800 rounded-md'
@@ -92,7 +92,7 @@ export const ReviewList = ({ id }: Props): JSX.Element => {
             Submit
           </button>
         </form>
-      ) : null}
+      )}
 
       <div>
         {reviews.map((review, key) => {

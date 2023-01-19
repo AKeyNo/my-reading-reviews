@@ -33,8 +33,7 @@ JSX.Element => {
           <div>{score}/10</div>
         </div>
         <div className='ml-auto text-gray-400'>
-          Posted{' '}
-          {review_post_time ? stringToMonthDayYear(review_post_time) : null}
+          Posted {review_post_time && stringToMonthDayYear(review_post_time)}
         </div>
       </div>
       <div className='mt-4'>{reviewText}</div>

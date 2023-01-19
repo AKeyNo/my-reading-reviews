@@ -72,14 +72,14 @@ export default function BookPage() {
             className='w-48 mx-auto rounded-md'
           />
 
-          {user ? (
+          {user && (
             <button
               onClick={() => setIsShowingListEditor(true)}
               className='w-4/5 p-4 mt-4 text-sm duration-100 bg-orange-700 rounded-md hover:bg-orange-800'
             >
               {isInformationIsOnline ? 'Edit Entry' : 'Add to List'}
             </button>
-          ) : null}
+          )}
         </div>
         <Dialog isActive={isShowingListEditor}>
           <ListEditor
@@ -105,7 +105,7 @@ export default function BookPage() {
             <p>Published: {book.publishedDate}</p>
             <p>
               Average Rating: {book.averageRating} ({book.ratingsCount} total
-              rating{book.ratingsCount > 1 ? 's' : ''})
+              rating{book.ratingsCount > 1 && 's'})
             </p>
           </Card>
         </div>

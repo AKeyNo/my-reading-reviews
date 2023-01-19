@@ -94,7 +94,7 @@ export const ListEditor = ({
         <div className='colspan-2'>
           <label className='block'>Status</label>
           <select
-            value={status as string}
+            value={(status as string) || 'Reading'}
             onChange={(e) =>
               setUserBookInformation({
                 ...userBookInformation,
@@ -116,7 +116,7 @@ export const ListEditor = ({
             type='number'
             min='0'
             max='10'
-            value={score as number}
+            value={(score as number) || 0}
             onChange={(e) =>
               setUserBookInformation({
                 ...userBookInformation,
@@ -132,7 +132,7 @@ export const ListEditor = ({
             type='number'
             min='0'
             max={book.pageCount}
-            value={pages_read as number}
+            value={(pages_read as number) || 0}
             onChange={(e) =>
               setUserBookInformation({
                 ...userBookInformation,
@@ -148,7 +148,7 @@ export const ListEditor = ({
             type='datetime-local'
             min='0'
             max={book.pageCount}
-            value={start_date as string}
+            value={(start_date as string) || 0}
             onChange={(e) =>
               setUserBookInformation({
                 ...userBookInformation,
@@ -163,7 +163,7 @@ export const ListEditor = ({
             type='datetime-local'
             min='0'
             max={book.pageCount}
-            value={finish_date as string}
+            value={(finish_date as string) || 0}
             onChange={(e) =>
               setUserBookInformation({
                 ...userBookInformation,
@@ -179,7 +179,7 @@ export const ListEditor = ({
             type='number'
             min='0'
             max={book.pageCount}
-            value={times_read as number}
+            value={(times_read as number) || 0}
             onChange={(e) =>
               setUserBookInformation({
                 ...userBookInformation,
@@ -193,7 +193,7 @@ export const ListEditor = ({
           <label className='block'>Notes</label>
           <textarea
             className='w-full col-span-full'
-            value={notes as string}
+            value={(notes as string) || ''}
             onChange={(e) =>
               setUserBookInformation({
                 ...userBookInformation,

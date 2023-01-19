@@ -15,7 +15,7 @@ export default function Home() {
         <h3 className='py-8 text-xl font-semibold text-blue-300'>
           Easy, quick, and made for readers.
         </h3>
-        {!session ? <AuthButtons /> : null}
+        {!session && <AuthButtons />}
       </div>
     </>
   );
