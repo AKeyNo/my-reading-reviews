@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>My Book Reviews - Keep track of your readings easily.</title>
+        <title>My Reading Reviews - Keep track of your readings easily.</title>
       </Head>
       <div className='p-12 m-12 text-center bg-gray-800 border-4 border-gray-700 rounded-md'>
         <h2 className='text-4xl font-bold'>Keep track of your readings.</h2>
