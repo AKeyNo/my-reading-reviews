@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Card } from '../../../components/Card';
 import Loading from '../../../components/Loading';
-import { useScroll } from '../../../hooks/useScroll';
+import { useScroll } from '../../../lib/hooks/useScroll';
 
 export default function SearchBook() {
   const router = useRouter();
