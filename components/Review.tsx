@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { stringToMonthDayYear } from '../lib/utils/date';
 import { Database } from '../types/supabase';
 
 interface Props {
@@ -17,16 +18,6 @@ JSX.Element => {
 
   const { username, avatar_url } = user_id;
 
-  // convert review_post_time to human readable text
-  const timePosted = (time: string) => {
-    const date = new Date(time);
-    const month = date.toLocaleString('default', { month: 'short' });
-    const day = date.getDate();
-    const year = date.getFullYear();
-
-    return `${month} ${day}, ${year}`;
-  };
-
   return (
     <article className='col-span-3 p-4 mb-4 bg-gray-800 rounded-md'>
       <div className='flex items-center justify-center w-full h-max'>
@@ -42,7 +33,7 @@ JSX.Element => {
           <div>{score}/10</div>
         </div>
         <div className='ml-auto text-gray-400'>
-          Posted {review_post_time ? timePosted(review_post_time) : null}
+          Posted {review_post_time ? stringToMonthDayYear(review_post_time) : null}
         </div>
       </div>
       <div className='mt-4'>{reviewText}</div>

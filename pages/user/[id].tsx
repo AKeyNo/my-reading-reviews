@@ -62,7 +62,7 @@ export default function UserPage() {
       const { data, error } = await supabase
         .from('read_list')
         .select(
-          'book_id, pages_read, status, cached_information:cached_books(title, cover, total_pages)'
+          'book_id, pages_read, status, finish_date, cached_information:cached_books(title, cover, total_pages)'
         )
         .eq('user_id', user.id)
         .order('finish_date', { ascending: false })

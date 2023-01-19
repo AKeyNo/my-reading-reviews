@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { stringToMonthDayYear } from '../lib/utils/date';
 
 interface Props {
   user: any;
@@ -57,7 +58,7 @@ export const RecentActivity = ({ user, book }: Props) => {
           {book.pages_read}/{totalPages}
         </span>
       </p>
-      <span className='ml-auto'>May 05, 2022</span>
+      <span className='ml-auto'>{stringToMonthDayYear(book.finish_date)}</span>
     </div>
   );
 };
