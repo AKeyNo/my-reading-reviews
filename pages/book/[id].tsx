@@ -98,15 +98,17 @@ export default function BookPage() {
         </div>
       </div>
       <div className='grid grid-cols-4 grid-rows-1 gap-4 p-12 border-t-0 flow-col'>
-        <Card colSpan='col-span-1'>
-          <h2 className='font-semibold'>Stats</h2>
-          <p>Page Count: {book.pageCount}</p>
-          <p>Published: {book.publishedDate}</p>
-          <p>
-            Average Rating: {book.averageRating} ({book.ratingsCount} total
-            rating{book.ratingsCount > 1 ? 's' : ''})
-          </p>
-        </Card>
+        <div>
+          <Card colSpan='col-span-1'>
+            <h2 className='font-semibold'>Stats</h2>
+            <p>Page Count: {book.pageCount}</p>
+            <p>Published: {book.publishedDate}</p>
+            <p>
+              Average Rating: {book.averageRating} ({book.ratingsCount} total
+              rating{book.ratingsCount > 1 ? 's' : ''})
+            </p>
+          </Card>
+        </div>
         <ReviewList id={id as string} />
       </div>
     </div>
