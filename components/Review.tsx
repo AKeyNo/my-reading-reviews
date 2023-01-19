@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { stringToMonthDayYear } from '../lib/utils/date';
-import { Database } from '../types/supabase';
+import { Database } from '../lib/types/supabase';
 
 interface Props {
   review: Omit<Database['public']['Tables']['read_list']['Row'], 'user_id'> & {
@@ -33,7 +33,8 @@ JSX.Element => {
           <div>{score}/10</div>
         </div>
         <div className='ml-auto text-gray-400'>
-          Posted {review_post_time ? stringToMonthDayYear(review_post_time) : null}
+          Posted{' '}
+          {review_post_time ? stringToMonthDayYear(review_post_time) : null}
         </div>
       </div>
       <div className='mt-4'>{reviewText}</div>

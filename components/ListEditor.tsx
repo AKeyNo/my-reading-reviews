@@ -1,7 +1,7 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import { X } from 'phosphor-react';
-import { ListEditorFields } from '../types/listEditor';
+import { ListEditorFields } from '../lib/types/listEditor';
 
 export const ListEditor = ({
   book,

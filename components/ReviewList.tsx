@@ -1,6 +1,6 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { useEffect, useRef, useState } from 'react';
-import { Database } from '../types/supabase';
+import { Database } from '../lib/types/supabase';
 import { Review } from './Review';
 
 interface Props {

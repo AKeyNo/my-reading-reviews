@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { AuthErrors, AuthFields } from '../types/auth';
+import { AuthErrors, AuthFields } from '../lib/types/auth';
 import { useRouter } from 'next/router';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { GetServerSidePropsContext } from 'next';

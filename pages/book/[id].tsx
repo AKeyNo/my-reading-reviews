@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useUser } from '@supabase/auth-helpers-react';
 import { Dialog } from '../../components/Dialog';
 import { ListEditor } from '../../components/ListEditor';
-import { Database } from '../../types/supabase';
+import { Database } from '../../lib/types/supabase';
 import { ReviewList } from '../../components/ReviewList';
 import Loading from '../../components/Loading';
 import { Card } from '../../components/Card';

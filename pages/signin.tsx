@@ -4,7 +4,7 @@ import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { AuthErrors, AuthFields } from '../types/auth';
+import { AuthErrors, AuthFields } from '../lib/types/auth';
 
 export default function SignIn() {
   const router = useRouter();

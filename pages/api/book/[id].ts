@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '../../../types/supabase';
+import { Database } from '../../../lib/types/supabase';
 
 export default async function handler(
   req: NextApiRequest,
