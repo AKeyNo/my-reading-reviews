@@ -19,6 +19,8 @@ export default function SearchBook() {
   const [loading, setLoading] = useState(false);
 
   const loadMoreBooks = async () => {
+    if (Object.keys(router.query).length === 0) return;
+
     setLoading(true);
     setStartIndex(startIndex + 1);
 
@@ -46,6 +48,7 @@ export default function SearchBook() {
       setSearchTitle(router.query.title as string);
       setSearchAuthor(router.query.author as string);
       setSearchPublisher(router.query.publisher as string);
+      setStartIndex(0);
 
       const response = await axios.get('/api/search/book', {
         params: { ...router.query, startIndex: 0 },
@@ -109,8 +112,10 @@ export default function SearchBook() {
           <input
             className='w-full p-2 mt-4 bg-gray-700 rounded-md'
             type='text'
+            value={searchTitle as string}
             placeholder=''
             onChange={(e) => setSearchTitle(e.target.value)}
+            data-cy='search-input-book-title'
           />
         </div>
         <div className='w-4/12'>
@@ -118,8 +123,10 @@ export default function SearchBook() {
           <input
             className='w-full p-2 mt-4 bg-gray-700 rounded-md'
             type='text'
+            value={searchAuthor as string}
             placeholder=''
             onChange={(e) => setSearchAuthor(e.target.value)}
+            data-cy='search-input-book-author'
           />
         </div>
         <div className='w-4/12'>
@@ -127,13 +134,15 @@ export default function SearchBook() {
           <input
             className='w-full p-2 mt-4 bg-gray-700 rounded-md'
             type='text'
+            value={searchPublisher as string}
             placeholder=''
             onChange={(e) => setSearchPublisher(e.target.value)}
+            data-cy='search-input-book-publisher'
           />
         </div>
       </form>
 
-      <div className='grid grid-cols-5 gap-x-4'>
+      <div className='grid grid-cols-5 gap-x-4' data-cy='search-book-results'>
         {books?.map((book: any, key: any) => (
           <div key={key} className='flex flex-col p-4 h-[23rem]'>
             <Link href={`/book/${book.id}`} passHref>

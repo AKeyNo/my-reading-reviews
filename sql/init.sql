@@ -24,13 +24,13 @@ create table read_list (
     notes text,
     start_date timestamptz,
     end_date timestamptz,
-    times_read smallint DEFAULT 0,
+    times_reread smallint DEFAULT 0,
 
     primary key (book_id, user_id),
     constraint pages_read_check check (pages_read >= 0),
     constraint score_check check (score >= 0 and score <= 10),
     constraint status_check check (status in ('Reading', 'Planning to Read', 'Completed', 'Paused', 'Dropped')),
-    constraint times_read_check check (times_read >= 0)
+    constraint times_reread_check check (times_reread >= 0)
 );
 
 -- Create a table for cached book covers
@@ -66,6 +66,9 @@ create policy "Users can create entries for their own book list" on read_list
 
 create policy "Users can edit their own book list" on read_list
   for update using (uid() = user_id);
+
+  create policy "Users can delete their own book list" on read_list
+  for delete using (uid() = user_id);
 
 alter table book_images
   enable row level security;

@@ -38,15 +38,21 @@ export const Header = () => {
 
       <div className='flex space-x-8 font-semibold text-gray-300'>
         <section className='duration-150 hover:text-white'>
-          <Link href='/'>Home</Link>
+          <Link href='/' data-cy='header-home'>
+            Home
+          </Link>
         </section>
         {user && (
           <section className='duration-150 hover:text-white'>
-            <Link href={`/user/${username}`}>Profile</Link>
+            <Link href={`/user/${username}`} data-cy='header-profile'>
+              Profile
+            </Link>
           </section>
         )}
         <section className='duration-150 hover:text-white'>
-          <Link href='/search/book'>Search</Link>
+          <Link href='/search/book' data-cy='header-search'>
+            Search
+          </Link>
         </section>
       </div>
       {user ? (
@@ -72,7 +78,6 @@ export const Header = () => {
               !isShowingUserMenu && 'opacity-0 pointer-events-none top-4'
             }`}
           >
-            {/* <div onClick={() => router.push(`/user/${username}`)}></div> */}
             <button
               onClick={() => router.push(`/user/${username}`)}
               className='flex items-center w-32 py-1 space-x-2 text-gray-400 duration-200 text-start hover:text-white'

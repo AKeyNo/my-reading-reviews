@@ -18,32 +18,13 @@ export const ListEditor = ({
     pages_read,
     start_date,
     finish_date,
-    times_read,
+    times_reread,
     notes,
   } = userBookInformation;
 
   const submitUserBookInformation = async () => {
     window.event?.preventDefault();
-
     if (!user) return;
-
-    const { error: uploadError } = await supabase.from('read_list').upsert([
-      {
-        user_id: user.id,
-        book_id: userBookInformation.book_id,
-        status: userBookInformation.status,
-        score: userBookInformation.score,
-        pages_read: userBookInformation.pages_read,
-        start_date: userBookInformation.start_date,
-        finish_date: userBookInformation.finish_date,
-        times_read: userBookInformation.times_read,
-        notes: userBookInformation.notes,
-        favorite: userBookInformation.favorite,
-      },
-    ]);
-    if (uploadError) {
-      console.error('error', uploadError);
-    }
 
     // cache the book image to save on querying too many times from Google Books API
     // this is used in displaying favorites and recently read book titles
@@ -60,7 +41,42 @@ export const ListEditor = ({
       console.error('error', cacheError);
     }
 
-    setIsInformationOnline();
+    const { error: uploadError } = await supabase.from('read_list').upsert([
+      {
+        user_id: user.id,
+        book_id: userBookInformation.book_id,
+        status: userBookInformation.status,
+        score: userBookInformation.score,
+        pages_read: userBookInformation.pages_read,
+        start_date: userBookInformation.start_date,
+        finish_date: userBookInformation.finish_date,
+        times_reread: userBookInformation.times_reread,
+        notes: userBookInformation.notes,
+        favorite: userBookInformation.favorite,
+      },
+    ]);
+    if (uploadError) {
+      console.error('error', uploadError);
+    }
+
+    setIsInformationOnline(true);
+  };
+
+  const deleteUserBookInformation = async () => {
+    if (!user) return;
+
+    const { error } = await supabase
+      .from('read_list')
+      .delete()
+      .eq('user_id', user.id)
+      .eq('book_id', userBookInformation.book_id);
+
+    if (error) {
+      console.error('error', error);
+    }
+
+    setIsInformationOnline(false);
+    closeListEditor();
   };
 
   return (
@@ -76,7 +92,7 @@ export const ListEditor = ({
         onClick={closeListEditor}
         className='absolute duration-200 right-12 hover:bg-red-800'
       >
-        <X size={32} weight='thin' />
+        <X size={32} weight='thin' data-cy='list-editor-close-button' />
       </button>
 
       <div className='flex items-center w-full'>
@@ -95,14 +111,24 @@ export const ListEditor = ({
           <label className='block'>Status</label>
           <select
             value={(status as string) || 'Reading'}
-            onChange={(e) =>
+            onChange={(e) => {
               setUserBookInformation({
                 ...userBookInformation,
                 status: e.target.value,
-              })
-            }
+              });
+              if (e.target.value === 'Completed') {
+                setUserBookInformation({
+                  ...userBookInformation,
+                  status: e.target.value,
+                  pages_read: book.pageCount,
+                });
+              }
+            }}
+            data-cy='list-editor-status'
           >
-            <option value='Reading'>Reading</option>
+            <option value='Reading' selected>
+              Reading
+            </option>
             <option value='Planning to Read'>Planning to Read</option>
             <option value='Completed'>Completed</option>
             <option value='Paused'>Paused</option>
@@ -123,6 +149,7 @@ export const ListEditor = ({
                 score: parseInt(e.target.value),
               })
             }
+            data-cy='list-editor-score'
           />
         </div>
 
@@ -139,13 +166,14 @@ export const ListEditor = ({
                 pages_read: parseInt(e.target.value),
               })
             }
+            data-cy='list-editor-pages-read'
           />
         </div>
 
         <div className='colspan-1'>
           <label className='block'>Start Date</label>
           <input
-            type='datetime-local'
+            type='date'
             min='0'
             max={book.pageCount}
             value={(start_date as string) || 0}
@@ -155,12 +183,13 @@ export const ListEditor = ({
                 start_date: e.target.value,
               })
             }
+            data-cy='list-editor-start-date'
           />
         </div>
         <div className='colspan-1'>
           <label className='block'>Finish Date</label>
           <input
-            type='datetime-local'
+            type='date'
             min='0'
             max={book.pageCount}
             value={(finish_date as string) || 0}
@@ -170,22 +199,24 @@ export const ListEditor = ({
                 finish_date: e.target.value,
               })
             }
+            data-cy='list-editor-finish-date'
           />
         </div>
 
         <div className='col-span-1'>
-          <label className='block'>Times Read</label>
+          <label className='block'>Times Reread</label>
           <input
             type='number'
             min='0'
             max={book.pageCount}
-            value={(times_read as number) || 0}
+            value={(times_reread as number) || 0}
             onChange={(e) =>
               setUserBookInformation({
                 ...userBookInformation,
-                times_read: parseInt(e.target.value),
+                times_reread: parseInt(e.target.value),
               })
             }
+            data-cy='list-editor-times-reread'
           />
         </div>
 
@@ -200,20 +231,24 @@ export const ListEditor = ({
                 notes: e.target.value,
               })
             }
+            data-cy='list-editor-notes'
           />
         </div>
       </div>
 
       <div className='flex justify-end space-x-2'>
-        {/* <button
+        <button
           className='p-4 px-8 text-sm duration-150 bg-orange-700 rounded-md hover:bg-orange-800'
-          onClick={closeListEditor}
+          onClick={deleteUserBookInformation}
+          type='button'
+          data-cy='list-editor-delete-button'
         >
           Delete
-        </button> */}
+        </button>
         <button
           className='p-4 px-8 text-sm duration-150 bg-orange-700 rounded-md hover:bg-orange-800'
           type='submit'
+          data-cy='list-editor-save-button'
         >
           Save
         </button>

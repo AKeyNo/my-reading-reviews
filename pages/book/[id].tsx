@@ -48,7 +48,7 @@ export default function BookPage() {
         pages_read: 0,
         start_date: null,
         finish_date: null,
-        times_read: 0,
+        times_reread: 0,
         favorite: false,
       } as Database['public']['Tables']['read_list']['Row']);
 
@@ -76,6 +76,7 @@ export default function BookPage() {
             <button
               onClick={() => setIsShowingListEditor(true)}
               className='w-4/5 p-4 mt-4 text-sm duration-100 bg-orange-700 rounded-md hover:bg-orange-800'
+              data-cy='add-to-list-button'
             >
               {isInformationIsOnline ? 'Edit Entry' : 'Add to List'}
             </button>
@@ -87,7 +88,7 @@ export default function BookPage() {
             userBookInformation={userBookInformation}
             setUserBookInformation={setUserBookInformation}
             closeListEditor={() => setIsShowingListEditor(false)}
-            setIsInformationOnline={() => setIsInformationIsOnline(true)}
+            setIsInformationOnline={setIsInformationIsOnline}
           />
         </Dialog>
         <div className='col-span-3'>

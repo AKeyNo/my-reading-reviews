@@ -1,4 +1,4 @@
-import { SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Database } from './supabase';
 
 export interface ListEditorFields {
@@ -8,5 +8,5 @@ export interface ListEditorFields {
     SetStateAction<Database['public']['Tables']['read_list']['Row']>
   >;
   closeListEditor: () => void;
-  setIsInformationOnline: () => void;
+  setIsInformationOnline: Dispatch<SetStateAction<boolean>>;
 }
