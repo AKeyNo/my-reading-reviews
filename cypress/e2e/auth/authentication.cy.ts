@@ -1,7 +1,9 @@
 describe('sign up process', () => {
   // put an invalid password, invalid confirm password, and finally submit the form
   it('should sign up a new user and log in and then sign out', () => {
-    const username = `username${Math.random().toString(36).substring(2, 10)}`;
+    const username = `sign-up-process-test-${Math.random()
+      .toString(36)
+      .substring(2, 10)}`;
     const correctPassword = 'what makes a good password? this?';
 
     cy.visit('/signup');
