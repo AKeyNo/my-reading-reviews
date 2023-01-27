@@ -20,7 +20,7 @@ Cypress.Commands.add('signUpCustom', (username: string, password: string) => {
 
   cy.get('[data-cy="sign-up-submit-button"]').click();
   cy.url().should('eq', Cypress.config().baseUrl);
-  cy.get('[data-cy="user-menu-username"]').contains(username);
+  cy.get('[data-cy="header-user-menu-username"]').contains(username);
 });
 
 Cypress.Commands.add('signInCustom', (username: string, password: string) => {
@@ -30,7 +30,7 @@ Cypress.Commands.add('signInCustom', (username: string, password: string) => {
   cy.get('[data-cy="password-input"]').type(password);
   cy.get('[data-cy="sign-in-submit-button"]').click();
   cy.url().should('eq', Cypress.config().baseUrl);
-  cy.get('[data-cy="user-menu-username"]').contains(
+  cy.get('[data-cy="header-user-menu-username"]').contains(
     `${username.toLowerCase()}`
   );
 });
@@ -45,16 +45,16 @@ Cypress.Commands.add('signIn', (username: string) => {
   );
   cy.get('[data-cy="sign-in-submit-button"]').click();
   cy.url().should('eq', Cypress.config().baseUrl);
-  cy.get('[data-cy="user-menu-username"]').contains(
+  cy.get('[data-cy="header-user-menu-username"]').contains(
     `${username.toLowerCase()}`
   );
 });
 
 Cypress.Commands.add('signOut', () => {
   // sign out button should be available on any page at the top
-  cy.get('[data-cy="user-menu"]').trigger('mouseover');
-  cy.get('[data-cy="sign-out-button"]').click();
-  cy.get('[data-cy="user-menu-username"]').should('not.exist');
+  cy.get('[data-cy="header-user-menu"]').trigger('mouseover');
+  cy.get('[data-cy="header-sign-out-button"]').click();
+  cy.get('[data-cy="header-user-menu-username"]').should('not.exist');
 });
 
 export {};

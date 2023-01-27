@@ -33,7 +33,9 @@ export const Header = () => {
   return (
     <header className='flex items-center mb-4 h-14 bg-stone-900 px-72'>
       <div className='mr-4 text-xl font-semibold'>
-        <Link href='/'>My Reading Reviews</Link>
+        <Link href='/' data-cy='header-logo'>
+          My Reading Reviews
+        </Link>
       </div>
 
       <div className='flex space-x-8 font-semibold text-gray-300'>
@@ -60,7 +62,7 @@ export const Header = () => {
           className='relative flex items-center h-full ml-auto space-x-2 text-blue-500 duration-200 cursor-pointer hover:text-blue-400 group'
           onMouseOver={() => setIsShowingUserMenu(true)}
           onMouseLeave={() => setIsShowingUserMenu(false)}
-          data-cy='user-menu'
+          data-cy='header-user-menu'
         >
           <div className='grid w-8 h-8 text-blue-100 rounded-full place-items-center bg-slate-500'>
             {avatarURL ? (
@@ -69,7 +71,7 @@ export const Header = () => {
               <p>{username[0]}</p>
             )}
           </div>
-          <p data-cy='user-menu-username'>{`${username}`}</p>
+          <p data-cy='header-user-menu-username'>{`${username}`}</p>
           <CaretDown size={16} weight='bold' />
 
           {/* drop down menu */}
@@ -91,7 +93,7 @@ export const Header = () => {
                 supabase.auth.signOut();
               }}
               className='flex items-center w-32 py-1 space-x-2 text-gray-400 duration-200 text-start hover:text-white'
-              data-cy='sign-out-button'
+              data-cy='header-sign-out-button'
             >
               <SignOut size={16} weight='bold' />
               <p>Logout</p>
@@ -103,14 +105,14 @@ export const Header = () => {
           <Link
             href='/signin'
             className='duration-200 hover:text-blue-300'
-            data-cy='sign-in-link'
+            data-cy='header-sign-in-link'
           >
             Sign In
           </Link>
           <Link
             href='/signup'
             className='duration-200 hover:text-blue-300'
-            data-cy='sign-up-link'
+            data-cy='header-sign-up-link'
           >
             Sign Up
           </Link>
