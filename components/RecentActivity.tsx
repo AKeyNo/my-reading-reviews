@@ -51,6 +51,7 @@ export const RecentActivity = ({ user, book }: Props) => {
         <Link
           href={`/book/${book.book_id}`}
           className='text-blue-500 duration-200 hover:text-blue-400'
+          data-cy={`recent-activity-user-${user.username}-book-${book.book_id}`}
         >
           {title}!{' '}
         </Link>

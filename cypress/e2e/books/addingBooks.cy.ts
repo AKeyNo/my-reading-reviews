@@ -1,5 +1,7 @@
 describe('manipulating read list', () => {
-  const username = `username${Math.random().toString(36).substring(2, 10)}`;
+  const username = `adding-books-test-${Math.random()
+    .toString(36)
+    .substring(2, 10)}`;
   const password = `${Math.random().toString(36)}`;
 
   before(() => {
@@ -90,9 +92,12 @@ describe('manipulating read list', () => {
     cy.get('[data-cy="header-profile"]').click();
 
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
-    cy.get('[data-cy="profile-recent-activity"]')
-      .contains(`${username} has completed The Hobbit! 256/256`)
-      .click();
+    cy.get('[data-cy="profile-recent-activity"]').contains(
+      `${username} has completed The Hobbit! 256/256`
+    );
+    cy.get(
+      `[data-cy="recent-activity-user-${username}-book-pD6arNyKyi8C"]`
+    ).click();
 
     cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
     cy.get('[data-cy="list-editor-delete-button"]').contains('Delete').click();
@@ -108,12 +113,12 @@ describe('manipulating read list', () => {
   it('should be able to favorite multiple books and be available on the user page', () => {
     cy.get('[data-cy="header-search"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
-    cy.get('[data-cy="search-input-book-title"]').type('The Hunger Games');
+    cy.get('[data-cy="search-input-book-title"]').type('A Tale of Two Cities');
     cy.get('[data-cy="search-book-results"]')
-      .contains('The Hunger Games')
+      .contains('A Tale of Two Cities')
       .click();
 
-    cy.url().should('eq', `${Cypress.config().baseUrl}book/fu2ZzwEACAAJ`);
+    cy.url().should('eq', `${Cypress.config().baseUrl}book/w88oAwAAQBAJ`);
     cy.get('[data-cy="add-to-list-button"]').click();
     cy.get('[data-cy="list-editor-favorite-button"]').click();
     cy.get('[data-cy="list-editor-save-button"]').click();
@@ -131,24 +136,24 @@ describe('manipulating read list', () => {
     cy.get('[data-cy="header-profile"]').click();
 
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
-    // the Hunger Games
-    cy.get('[data-cy="profile-favorite-book-fu2ZzwEACAAJ"]');
+    // A Tale of Two Cities
+    cy.get('[data-cy="profile-favorite-book-w88oAwAAQBAJ"]');
     // To Kill a Mockingbird
     cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]');
 
-    // now unfavorite the Hunger Games
-    cy.get('[data-cy="profile-favorite-book-fu2ZzwEACAAJ"]').click();
+    // now unfavorite A Tale of Two Cities
+    cy.get('[data-cy="profile-favorite-book-w88oAwAAQBAJ"]').click();
     cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
     cy.get('[data-cy="list-editor-favorite-button"]').click();
     cy.get('[data-cy="list-editor-save-button"]').click();
     cy.get('[data-cy="header-profile"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
-    cy.get('[data-cy="profile-favorite-book-fu2ZzwEACAAJ"]').should(
+    cy.get('[data-cy="profile-favorite-book-w88oAwAAQBAJ"]').should(
       'not.exist'
     );
     cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]');
     cy.get('[data-cy="profile-recent-activity"]').contains(
-      `${username} is reading The Hunger Games! 0/374`
+      `${username} is reading A Tale of Two Cities! 0/304`
     );
 
     // now unfavorite To Kill a Mockingbird
