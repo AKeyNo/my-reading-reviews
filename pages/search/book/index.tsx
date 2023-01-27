@@ -13,13 +13,14 @@ export default function SearchBook() {
   const [searchTitle, setSearchTitle] = useState<string | null>();
   const [searchAuthor, setSearchAuthor] = useState<string | null>();
   const [searchPublisher, setSearchPublisher] = useState<string | null>();
-  const [startIndex, setStartIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(-1);
   const [books, setBooks] = useState([] as any);
 
   const [loading, setLoading] = useState(false);
 
   const loadMoreBooks = async () => {
     if (Object.keys(router.query).length === 0) return;
+    if (startIndex == 0) return;
 
     setLoading(true);
     setStartIndex(startIndex + 1);
@@ -48,7 +49,6 @@ export default function SearchBook() {
       setSearchTitle(router.query.title as string);
       setSearchAuthor(router.query.author as string);
       setSearchPublisher(router.query.publisher as string);
-      setStartIndex(0);
 
       const response = await axios.get('/api/search/book', {
         params: { ...router.query, startIndex: 0 },
@@ -60,6 +60,7 @@ export default function SearchBook() {
 
       setBooks(response.data.items);
       setLoading(false);
+      setStartIndex(1);
     };
     fetchBooks();
   }, [router.query]);
