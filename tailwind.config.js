@@ -5,7 +5,11 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      flexBasis: {
+        '1/11': '11.11111111111111%',
+      },
+    },
   },
   plugins: [],
 };

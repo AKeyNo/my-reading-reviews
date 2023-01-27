@@ -4,7 +4,13 @@ describe('manipulating read list', () => {
 
   before(() => {
     cy.signUpCustom(username, password);
+    cy.signOut();
     // cy.signIn('juliuscaesar');
+  });
+
+  beforeEach(() => {
+    cy.signInCustom(username, password);
+    cy.visit('/');
   });
 
   after(() => {
@@ -99,7 +105,66 @@ describe('manipulating read list', () => {
     );
   });
 
-  xit('should be able to favorite multiple books and be available on the user page', () => {});
+  it('should be able to favorite multiple books and be available on the user page', () => {
+    cy.get('[data-cy="header-search"]').click();
+    cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
+    cy.get('[data-cy="search-input-book-title"]').type('The Hunger Games');
+    cy.get('[data-cy="search-book-results"]')
+      .contains('The Hunger Games')
+      .click();
+
+    cy.url().should('eq', `${Cypress.config().baseUrl}book/fu2ZzwEACAAJ`);
+    cy.get('[data-cy="add-to-list-button"]').click();
+    cy.get('[data-cy="list-editor-favorite-button"]').click();
+    cy.get('[data-cy="list-editor-save-button"]').click();
+    cy.get('[data-cy="header-search"]').click();
+    cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
+    cy.get('[data-cy="search-input-book-title"]').type('To Kill a Mockingbird');
+    // regex means contains exactly 'To Kill a Mockingbird'
+    cy.get('[data-cy="search-book-results"]')
+      .contains(/^To Kill a Mockingbird$/)
+      .click();
+    cy.url().should('eq', `${Cypress.config().baseUrl}book/NeMtSAAACAAJ`);
+    cy.get('[data-cy="add-to-list-button"]').click();
+    cy.get('[data-cy="list-editor-favorite-button"]').click();
+    cy.get('[data-cy="list-editor-save-button"]').click();
+    cy.get('[data-cy="header-profile"]').click();
+
+    cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
+    // the Hunger Games
+    cy.get('[data-cy="profile-favorite-book-fu2ZzwEACAAJ"]');
+    // To Kill a Mockingbird
+    cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]');
+
+    // now unfavorite the Hunger Games
+    cy.get('[data-cy="profile-favorite-book-fu2ZzwEACAAJ"]').click();
+    cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
+    cy.get('[data-cy="list-editor-favorite-button"]').click();
+    cy.get('[data-cy="list-editor-save-button"]').click();
+    cy.get('[data-cy="header-profile"]').click();
+    cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
+    cy.get('[data-cy="profile-favorite-book-fu2ZzwEACAAJ"]').should(
+      'not.exist'
+    );
+    cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]');
+    cy.get('[data-cy="profile-recent-activity"]').contains(
+      `${username} is reading The Hunger Games! 0/374`
+    );
+
+    // now unfavorite To Kill a Mockingbird
+    cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]').click();
+    cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
+    cy.get('[data-cy="list-editor-favorite-button"]').click();
+    cy.get('[data-cy="list-editor-save-button"]').click();
+    cy.get('[data-cy="header-profile"]').click();
+    cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
+    cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]').should(
+      'not.exist'
+    );
+    cy.get('[data-cy="profile-recent-activity"]').contains(
+      `${username} is reading To Kill a Mockingbird! 0/384`
+    );
+  });
 });
 
 export {};

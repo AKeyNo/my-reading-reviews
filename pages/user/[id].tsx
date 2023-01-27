@@ -138,17 +138,24 @@ export default function UserPage() {
         </Card>
         <Card flex={'flex flex-col'} dataCy='profile-favorites'>
           <h2 className='mb-4 font-semibold'>Favorites</h2>
-          {favorites?.map((book: any, key: string) => (
-            <Link href={`/book/${book.book_id}`} key={key} passHref>
-              <Image
-                src={book.cached_books.cover || '/missingBookImage.png'}
-                alt={book.name || 'Missing Book Name'}
-                width={100}
-                height={100}
-                className='inline w-24 mr-4 rounded-md basis-1/12'
-              />
-            </Link>
-          ))}
+          <div className='flex space-x-2'>
+            {favorites?.map((book: any, key: string) => (
+              <Link
+                href={`/book/${book.book_id}`}
+                key={key}
+                passHref
+                className={`relative flex items-center h-44 basis-1/11`}
+              >
+                <Image
+                  src={book.cached_books.cover || '/missingBookImage.png'}
+                  alt={book.name || 'Missing Book Name'}
+                  fill
+                  className='inline object-cover w-full mr-4 rounded-md'
+                  data-cy={`profile-favorite-book-${book.book_id}`}
+                />
+              </Link>
+            ))}
+          </div>
         </Card>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
-import { X } from 'phosphor-react';
+import { Heart, X } from 'phosphor-react';
 import { ListEditorFields } from '../lib/types/listEditor';
 
 export const ListEditor = ({
@@ -20,6 +20,7 @@ export const ListEditor = ({
     finish_date,
     times_reread,
     notes,
+    favorite,
   } = userBookInformation;
 
   const submitUserBookInformation = async () => {
@@ -236,9 +237,22 @@ export const ListEditor = ({
         </div>
       </div>
 
-      <div className='flex justify-end space-x-2'>
+      <div className='flex items-center'>
         <button
-          className='p-4 px-8 text-sm duration-150 bg-orange-700 rounded-md hover:bg-orange-800'
+          type='button'
+          onClick={() =>
+            setUserBookInformation({
+              ...userBookInformation,
+              favorite: !userBookInformation.favorite,
+            })
+          }
+          className={`duration-150 ${favorite ? 'text-red-700' : 'text-white'}`}
+          data-cy='list-editor-favorite-button'
+        >
+          <Heart size={32} weight='fill' />
+        </button>
+        <button
+          className='p-4 px-8 ml-auto mr-2 text-sm duration-150 bg-orange-700 rounded-md hover:bg-orange-800'
           onClick={deleteUserBookInformation}
           type='button'
           data-cy='list-editor-delete-button'
