@@ -110,7 +110,11 @@ export default function BookPage() {
             </p>
           </Card>
         </div>
-        <ReviewList id={id as string} />
+        <ReviewList
+          id={id as string}
+          userBookInformation={userBookInformation}
+          isInformationIsOnline={isInformationIsOnline}
+        />
       </div>
     </div>
   );
