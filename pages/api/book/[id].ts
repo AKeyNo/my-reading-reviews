@@ -18,7 +18,7 @@ export default async function handler(
 }
 
 // GET /api/book/[id]
-// gets the respective book contents from the Google Books API and returns it
+// gets the respective book contents from the Google Books and returns it
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
   const supabaseServerClient = createServerSupabaseClient<Database>({
@@ -27,7 +27,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   });
 
   try {
-    // fetch the book from the Google Books API
+    // fetch the book from the Google Books
     const response = await axios.get(
       `https://www.googleapis.com/books/v1/volumes/${id}?key=${process.env.GOOGLE_BOOKS_API_KEY}`
     );

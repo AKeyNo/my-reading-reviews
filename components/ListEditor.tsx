@@ -27,7 +27,7 @@ export const ListEditor = ({
     window.event?.preventDefault();
     if (!user) return;
 
-    // cache the book image to save on querying too many times from Google Books API
+    // cache the book image to save on querying too many times from Google Books
     // this is used in displaying favorites and recently read book titles
     const { error: cacheError } = await supabase.from('cached_books').upsert([
       {

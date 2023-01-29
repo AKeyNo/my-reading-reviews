@@ -1,6 +1,6 @@
 # My Reading Reviews
 
-A book tracker using the Google Books API where users are able to keep track of their readings and leave book reviews.
+A book tracker using the Google Books API Family where users are able to keep track of their readings and leave book reviews.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ npm install
 
 Fill out the ".env.local example" file and rename the file name to ".env.local".
 Input the Project URL key and the anon public key from earlier under their respective places.
-Set up a [Google Books APIs key](https://developers.google.com/books/docs/v1/using) and input your API Key in the .env_local file.
+Set up a [Google Books API Family key](https://developers.google.com/books/docs/v1/using) and input your API Key in the .env_local file.
 After this, type in the following command to run it.
 
 ```

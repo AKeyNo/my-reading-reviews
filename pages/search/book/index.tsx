@@ -142,6 +142,12 @@ export default function SearchBook() {
           />
         </div>
       </form>
+      <Image
+        src='https://books.google.com/googlebooks/images/poweredby.png'
+        alt='Powered by Google Books'
+        width={62}
+        height={30}
+      />
 
       <div className='grid grid-cols-5 gap-x-4' data-cy='search-book-results'>
         {books?.map((book: any, key: any) => (
