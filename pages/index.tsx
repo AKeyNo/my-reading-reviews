@@ -1,10 +1,16 @@
-import { useSession } from '@supabase/auth-helpers-react';
+import {
+  createServerSupabaseClient,
+  Session,
+} from '@supabase/auth-helpers-nextjs';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { AuthButtons } from '../components/AuthButtons';
 
-export default function Home() {
-  const session = useSession();
+interface Props {
+  session: Session | null;
+}
 
+export default function Home({ session }: Props) {
   return (
     <>
       <Head>
@@ -20,3 +26,15 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const supabase = createServerSupabaseClient(context);
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  return { props: { session } };
+};
