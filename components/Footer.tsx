@@ -12,6 +12,14 @@ export const Footer = () => {
       <div className='flex ml-auto space-x-2 text-blue-500'>
         <section>
           <Link
+            href='http://localhost:3000/legal/privacy-policy'
+            className='duration-200 hover:text-blue-400'
+          >
+            Privacy Policy
+          </Link>
+        </section>
+        <section>
+          <Link
             href='https://github.com/AKeyNo/my-reading-reviews'
             className='duration-200 hover:text-blue-400'
           >

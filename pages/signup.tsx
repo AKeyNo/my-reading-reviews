@@ -222,12 +222,23 @@ export default function SignUp() {
         </div>
 
         <button
-          className='p-4 px-12 mt-4 duration-200 bg-orange-700 rounded-md hover:bg-orange-800'
+          className='p-4 px-12 my-4 duration-200 bg-orange-700 rounded-md hover:bg-orange-800'
           type='submit'
           data-cy='sign-up-submit-button'
         >
           Sign Up
         </button>
+
+        <p>
+          By selecting Sign Up, you have read and agree to our{' '}
+          <Link
+            href='/legal/privacy-policy'
+            className='text-blue-500 duration-200 hover:text-blue-400'
+          >
+            Privacy Policy
+          </Link>
+          .
+        </p>
 
         <p className='mt-24 text-white'>
           Already have an account?{' '}
