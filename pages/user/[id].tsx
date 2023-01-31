@@ -101,7 +101,7 @@ export default function UserPage() {
       0
     );
 
-    return (totalScore / user.read_list.length).toPrecision(3);
+    return (totalScore / user.read_list.length).toFixed(2);
   };
 
   return (

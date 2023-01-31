@@ -9,10 +9,12 @@ export const ListEditor = ({
   setUserBookInformation,
   closeListEditor,
   setIsInformationOnline,
+  updateBookStats,
 }: ListEditorFields) => {
   const supabase = useSupabaseClient();
   const user = useUser();
   const {
+    book_id,
     status,
     score,
     pages_read,
@@ -31,7 +33,7 @@ export const ListEditor = ({
     // this is used in displaying favorites and recently read book titles
     const { error: cacheError } = await supabase.from('cached_books').upsert([
       {
-        book_id: userBookInformation.book_id,
+        book_id: book_id,
         title: book.title,
         cover: book.imageLinks?.smallThumbnail,
         total_pages: book.pageCount,
@@ -45,15 +47,15 @@ export const ListEditor = ({
     const { error: uploadError } = await supabase.from('read_list').upsert([
       {
         user_id: user.id,
-        book_id: userBookInformation.book_id,
-        status: userBookInformation.status,
-        score: userBookInformation.score,
-        pages_read: userBookInformation.pages_read,
-        start_date: userBookInformation.start_date,
-        finish_date: userBookInformation.finish_date,
-        times_reread: userBookInformation.times_reread,
-        notes: userBookInformation.notes,
-        favorite: userBookInformation.favorite,
+        book_id: book_id,
+        status: status,
+        score: score,
+        pages_read: pages_read,
+        start_date: start_date,
+        finish_date: finish_date,
+        times_reread: times_reread,
+        notes: notes,
+        favorite: favorite,
       },
     ]);
     if (uploadError) {
@@ -61,6 +63,7 @@ export const ListEditor = ({
     }
 
     setIsInformationOnline(true);
+    updateBookStats();
   };
 
   const deleteUserBookInformation = async () => {
@@ -77,6 +80,7 @@ export const ListEditor = ({
     }
 
     setIsInformationOnline(false);
+    updateBookStats();
     closeListEditor();
   };
 

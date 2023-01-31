@@ -9,4 +9,5 @@ export interface ListEditorFields {
   >;
   closeListEditor: () => void;
   setIsInformationOnline: Dispatch<SetStateAction<boolean>>;
+  updateBookStats: () => void;
 }

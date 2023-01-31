@@ -113,3 +113,16 @@ create policy "Avatar images are publicly accessible." on storage.objects
 
 create policy "Anyone can upload an avatar." on storage.objects
   for insert with check (bucket_id = 'avatars');
+
+create or replace function get_book_stats(book_id_to_check text)
+  returns setof record language sql as $$
+  select (select count(*) from read_list where book_id = book_id_to_check) as "totalListings",
+  (select avg(score) from read_list where book_id = book_id_to_check) as "averageScore",
+  (select count(*) from read_list where review is not null and book_id = book_id_to_check) as "totalReviews",
+  (select count(*) from read_list where status = 'Reading' and book_id = book_id_to_check) as "totalCurrentlyReading",
+  (select count(*) from read_list where status = 'Planning to Read' and book_id = book_id_to_check) as "totalCurrentlyPlanning",
+  (select count(*) from read_list where status = 'Completed' and book_id = book_id_to_check) as "totalCurrentlyCompleted",
+  (select count(*) from read_list where status = 'Paused' and book_id = book_id_to_check) as "totalCurrentlyPaused",
+  (select count(*) from read_list where status = 'Dropped' and book_id = book_id_to_check) as "totalCurrentlyDropped"
+  ;
+$$;

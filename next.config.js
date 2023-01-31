@@ -5,6 +5,11 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'https',
+        hostname: 'www.google.com',
+        pathname: '/intl/en/googlebooks/images/**',
+      },
+      {
         protocol: 'http',
         hostname: 'books.google.com',
         pathname: '/books/**',

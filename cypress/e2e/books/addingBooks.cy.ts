@@ -40,57 +40,97 @@ describe('manipulating read list', () => {
       notes,
     } = userBookInformation;
 
+    let beforeAverageScore: number = -1,
+      beforeTotalListings: number = -1;
+
     cy.get('[data-cy="header-search"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
     cy.get('[data-cy="search-input-book-title"]').type('The Hobbit');
     cy.get('[data-cy="search-book-results"]').contains('The Hobbit').click();
 
     cy.url().should('eq', `${Cypress.config().baseUrl}book/pD6arNyKyi8C`);
-    cy.get('[data-cy="add-to-list-button"]').click();
-    cy.get('[data-cy="list-editor-status"]').should('have.value', 'Reading');
-    cy.get('[data-cy="list-editor-score"]').should('have.value', '0');
-    cy.get('[data-cy="list-editor-pages-read"]').should('have.value', '0');
-    cy.get('[data-cy="list-editor-start-date"]').should('have.value', '');
-    cy.get('[data-cy="list-editor-finish-date"]').should('have.value', '');
-    cy.get('[data-cy="list-editor-times-reread"]').should('have.value', '0');
-    cy.get('[data-cy="list-editor-notes"]').should('have.value', '');
+    cy.get('[data-cy="community-stats-total-listings"]')
+      .then(($totalListings) => {
+        beforeTotalListings = parseInt(
+          $totalListings.text().split('Total Listings: ')[1]
+        );
+      })
+      .then(() => {
+        cy.get('[data-cy="community-stats-average-score"]').then(
+          ($averageScore) => {
+            beforeAverageScore = parseInt(
+              $averageScore.text().split('Average Score: ')[1]
+            );
+          }
+        );
+      })
+      .then(() => {
+        cy.get('[data-cy="add-to-list-button"]').click();
+        cy.get('[data-cy="list-editor-status"]').should(
+          'have.value',
+          'Reading'
+        );
+        cy.get('[data-cy="list-editor-score"]').should('have.value', '0');
+        cy.get('[data-cy="list-editor-pages-read"]').should('have.value', '0');
+        cy.get('[data-cy="list-editor-start-date"]').should('have.value', '');
+        cy.get('[data-cy="list-editor-finish-date"]').should('have.value', '');
+        cy.get('[data-cy="list-editor-times-reread"]').should(
+          'have.value',
+          '0'
+        );
+        cy.get('[data-cy="list-editor-notes"]').should('have.value', '');
 
-    cy.get('[data-cy="list-editor-status"]').select(status);
-    // should autofill pages read
-    cy.get('[data-cy="list-editor-pages-read"]').should(
-      'have.value',
-      pagesRead
-    );
-    // calls invoke because .clear() doesn't work, same as lower down
-    cy.get('[data-cy="list-editor-score"]').invoke('val', '').type(score);
-    cy.get('[data-cy="list-editor-start-date"]').type(startDate);
-    cy.get('[data-cy="list-editor-finish-date"]').type(finishDate);
-    cy.get('[data-cy="list-editor-times-reread"]')
-      .invoke('val', '')
-      .type(timesReread);
-    cy.get('[data-cy="list-editor-notes"]').type(notes);
-    cy.get('[data-cy="list-editor-save-button"]').click();
+        cy.get('[data-cy="list-editor-status"]').select(status);
+        // should autofill pages read
+        cy.get('[data-cy="list-editor-pages-read"]').should(
+          'have.value',
+          pagesRead
+        );
+        // calls invoke because .clear() doesn't work, same as lower down
+        cy.get('[data-cy="list-editor-score"]').invoke('val', '').type(score);
+        cy.get('[data-cy="list-editor-start-date"]').type(startDate);
+        cy.get('[data-cy="list-editor-finish-date"]').type(finishDate);
+        cy.get('[data-cy="list-editor-times-reread"]')
+          .invoke('val', '')
+          .type(timesReread);
+        cy.get('[data-cy="list-editor-notes"]').type(notes);
+        cy.get('[data-cy="list-editor-save-button"]').click();
 
-    cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
-    cy.get('[data-cy="list-editor-status"]').should('have.value', status);
-    cy.get('[data-cy="list-editor-score"]').should('have.value', score);
-    cy.get('[data-cy="list-editor-pages-read"]').should(
-      'have.value',
-      pagesRead
-    );
-    cy.get('[data-cy="list-editor-start-date"]').should(
-      'have.value',
-      startDate
-    );
-    cy.get('[data-cy="list-editor-finish-date"]').should(
-      'have.value',
-      finishDate
-    );
-    cy.get('[data-cy="list-editor-times-reread"]').should('have.value', '2');
-    cy.get('[data-cy="list-editor-notes"]').should('have.value', notes);
-    cy.get('[data-cy="list-editor-close-button"]').click();
+        cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
+        cy.get('[data-cy="list-editor-status"]').should('have.value', status);
+        cy.get('[data-cy="list-editor-score"]').should('have.value', score);
+        cy.get('[data-cy="list-editor-pages-read"]').should(
+          'have.value',
+          pagesRead
+        );
+        cy.get('[data-cy="list-editor-start-date"]').should(
+          'have.value',
+          startDate
+        );
+        cy.get('[data-cy="list-editor-finish-date"]').should(
+          'have.value',
+          finishDate
+        );
+        cy.get('[data-cy="list-editor-times-reread"]').should(
+          'have.value',
+          '2'
+        );
+        cy.get('[data-cy="list-editor-notes"]').should('have.value', notes);
+        cy.get('[data-cy="list-editor-close-button"]').click();
+
+        cy.get('[data-cy="community-stats-average-score"]').contains(
+          `Average Score: ${(
+            (beforeAverageScore * beforeTotalListings + parseInt(score)) /
+            (beforeTotalListings + 1)
+          ).toFixed(2)}`
+        );
+
+        cy.get('[data-cy="community-stats-total-listings"]').contains(
+          `Total Listings: ${beforeTotalListings + 1}`
+        );
+      });
+
     cy.get('[data-cy="header-profile"]').click();
-
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
     cy.get('[data-cy="profile-recent-activity"]').contains(
       `${username} has completed The Hobbit! 256/256`
@@ -124,7 +164,8 @@ describe('manipulating read list', () => {
     cy.get('[data-cy="list-editor-save-button"]').click();
     cy.get('[data-cy="header-search"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
-    cy.get('[data-cy="search-input-book-title"]').type('To Kill a Mockingbird');
+    // NeMtSAAACAAJ is the book id for To Kill a Mockingbird
+    cy.get('[data-cy="search-input-book-title"]').type('NeMtSAAACAAJ');
     // regex means contains exactly 'To Kill a Mockingbird'
     cy.get('[data-cy="search-book-results"]')
       .contains(/^To Kill a Mockingbird$/)
