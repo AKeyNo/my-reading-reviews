@@ -19,7 +19,7 @@ describe('manipulating read list', () => {
     // cy.signOut();
   });
 
-  it('should add search a book, add it, be available on the profile page, and remove it', () => {
+  it('should search a book, add it, be available on the profile page, and remove it', () => {
     const userBookInformation = {
       status: 'Completed',
       score: '8',
@@ -151,6 +151,9 @@ describe('manipulating read list', () => {
   });
 
   it('should be able to favorite multiple books and be available on the user page', () => {
+    let beforeTotalFavoritesFirst = -1;
+    let beforeTotalFavoritesSecond = -1;
+
     cy.get('[data-cy="header-search"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
     cy.get('[data-cy="search-input-book-title"]').type('A Tale of Two Cities');
@@ -159,21 +162,46 @@ describe('manipulating read list', () => {
       .click();
 
     cy.url().should('eq', `${Cypress.config().baseUrl}book/w88oAwAAQBAJ`);
-    cy.get('[data-cy="add-to-list-button"]').click();
-    cy.get('[data-cy="list-editor-favorite-button"]').click();
-    cy.get('[data-cy="list-editor-save-button"]').click();
+    cy.get('[data-cy="community-stats-total-favorites"]')
+      .then(($totalListings) => {
+        beforeTotalFavoritesFirst = parseInt(
+          $totalListings.text().split('Total Favorites: ')[1]
+        );
+      })
+      .then(() => {
+        cy.get('[data-cy="add-to-list-button"]').click();
+        cy.get('[data-cy="list-editor-favorite-button"]').click();
+        cy.get('[data-cy="list-editor-save-button"]').click();
+        cy.get('[data-cy="community-stats-total-favorites"]').contains(
+          `Total Favorites: ${beforeTotalFavoritesFirst + 1}`
+        );
+      });
+
     cy.get('[data-cy="header-search"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
     // NeMtSAAACAAJ is the book id for To Kill a Mockingbird
     cy.get('[data-cy="search-input-book-title"]').type('NeMtSAAACAAJ');
+
     // regex means contains exactly 'To Kill a Mockingbird'
     cy.get('[data-cy="search-book-results"]')
       .contains(/^To Kill a Mockingbird$/)
       .click();
     cy.url().should('eq', `${Cypress.config().baseUrl}book/NeMtSAAACAAJ`);
-    cy.get('[data-cy="add-to-list-button"]').click();
-    cy.get('[data-cy="list-editor-favorite-button"]').click();
-    cy.get('[data-cy="list-editor-save-button"]').click();
+    cy.get('[data-cy="community-stats-total-favorites"]')
+      .then(($totalListings) => {
+        beforeTotalFavoritesSecond = parseInt(
+          $totalListings.text().split('Total Favorites: ')[1]
+        );
+      })
+      .then(() => {
+        cy.get('[data-cy="add-to-list-button"]').click();
+        cy.get('[data-cy="list-editor-favorite-button"]').click();
+        cy.get('[data-cy="list-editor-save-button"]').click();
+        cy.get('[data-cy="community-stats-total-favorites"]').contains(
+          `Total Favorites: ${beforeTotalFavoritesSecond + 1}`
+        );
+      });
+
     cy.get('[data-cy="header-profile"]').click();
 
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
@@ -185,8 +213,21 @@ describe('manipulating read list', () => {
     // now unfavorite A Tale of Two Cities
     cy.get('[data-cy="profile-favorite-book-w88oAwAAQBAJ"]').click();
     cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
-    cy.get('[data-cy="list-editor-favorite-button"]').click();
-    cy.get('[data-cy="list-editor-save-button"]').click();
+
+    cy.get('[data-cy="community-stats-total-favorites"]')
+      .then(($totalListings) => {
+        beforeTotalFavoritesFirst = parseInt(
+          $totalListings.text().split('Total Favorites: ')[1]
+        );
+      })
+      .then(() => {
+        cy.get('[data-cy="list-editor-favorite-button"]').click();
+        cy.get('[data-cy="list-editor-save-button"]').click();
+        cy.get('[data-cy="community-stats-total-favorites"]').contains(
+          `Total Favorites: ${beforeTotalFavoritesFirst - 1}`
+        );
+      });
+
     cy.get('[data-cy="header-profile"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
     cy.get('[data-cy="profile-favorite-book-w88oAwAAQBAJ"]').should(
@@ -200,8 +241,21 @@ describe('manipulating read list', () => {
     // now unfavorite To Kill a Mockingbird
     cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]').click();
     cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
-    cy.get('[data-cy="list-editor-favorite-button"]').click();
-    cy.get('[data-cy="list-editor-save-button"]').click();
+    cy.get('[data-cy="community-stats-total-favorites"]')
+      .then(($totalListings) => {
+        beforeTotalFavoritesSecond = parseInt(
+          $totalListings.text().split('Total Favorites: ')[1]
+        );
+      })
+      .then(() => {
+        cy.get('[data-cy="list-editor-favorite-button"]').click({
+          force: true,
+        });
+        cy.get('[data-cy="list-editor-save-button"]').click();
+        cy.get('[data-cy="community-stats-total-favorites"]').contains(
+          `Total Favorites: ${beforeTotalFavoritesSecond - 1}`
+        );
+      });
     cy.get('[data-cy="header-profile"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
     cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]').should(

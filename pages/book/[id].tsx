@@ -213,6 +213,13 @@ export default function BookPage() {
                   <strong className='font-semibold'>Average Score:</strong>{' '}
                   {bookStats.averageScore?.toFixed(2) || 'N/A'}
                 </p>
+                <p
+                  className='text-gray-200'
+                  data-cy='community-stats-total-favorites'
+                >
+                  <strong className='font-semibold'>Total Favorites:</strong>{' '}
+                  {bookStats.totalFavorites}
+                </p>
                 <br />
                 <p
                   className='text-gray-200'

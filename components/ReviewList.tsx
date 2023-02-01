@@ -137,7 +137,7 @@ export const ReviewList = ({
 
   const getReviewButtonText = () => {
     if (showReviewCreation) return 'Close Review Form';
-    else if (userReview.review) return 'Edit Your Review';
+    else if (userReview?.review) return 'Edit Your Review';
     else return 'Create a Review';
   };
 
