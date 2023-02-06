@@ -14,7 +14,6 @@ describe('header buttons work', () => {
 
   it('should go to the home page when the logo is clicked', () => {
     cy.visit('/search/book');
-    cy.visit('/');
     cy.get('[data-cy="header-logo"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}`);
   });
