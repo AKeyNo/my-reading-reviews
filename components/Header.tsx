@@ -1,15 +1,14 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CaretDown, SignOut, User } from 'phosphor-react';
 import { useEffect, useState } from 'react';
+import { Avatar } from './Avatar';
 
 export const Header = () => {
   const supabase = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
-  const [avatarURL, setAvatarURL] = useState(null as string | null);
   const username = user?.user_metadata.username;
   const [isShowingUserMenu, setIsShowingUserMenu] = useState(false);
 
@@ -23,8 +22,6 @@ export const Header = () => {
         .single();
 
       if (!data) return;
-
-      setAvatarURL(data?.avatar_url);
     };
 
     getAvatar();
@@ -64,13 +61,12 @@ export const Header = () => {
           onMouseLeave={() => setIsShowingUserMenu(false)}
           data-cy='header-user-menu'
         >
-          <div className='grid w-8 h-8 text-blue-100 rounded-full place-items-center bg-slate-500'>
-            {avatarURL ? (
-              <Image src={avatarURL} alt={`${username}'s avatar`} />
-            ) : (
-              <p>{username[0]}</p>
-            )}
-          </div>
+          <Avatar
+            username={username}
+            userID={user.id}
+            url={user.user_metadata.avatar_url}
+            size='small'
+          />
           <p data-cy='header-user-menu-username'>{`${username}`}</p>
           <CaretDown size={16} weight='bold' />
 

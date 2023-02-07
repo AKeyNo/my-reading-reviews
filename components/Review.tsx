@@ -1,11 +1,14 @@
-import Image from 'next/image';
 import { stringToMonthDayYear } from '../lib/utils/date';
 import { Database } from '../lib/types/supabase';
 import { User } from '@supabase/auth-helpers-react';
+import { Avatar } from './Avatar';
 
 interface Props {
-  review: Omit<Database['public']['Tables']['read_list']['Row'], 'user_id'> & {
-    user_id: { username: string; avatar_url: string };
+  review: Database['public']['Tables']['read_list']['Row'] & {
+    profiles: {
+      username: string;
+      avatar_url: string;
+    };
   };
   deleteOwnReview?: () => void;
   user?: User | null;
@@ -27,33 +30,30 @@ JSX.Element => {
     return <></>;
 
   const { score, user_id, review: reviewText, review_post_time } = review;
-  const { username, avatar_url } = user_id;
+  const { username, avatar_url } = review.profiles;
 
   return (
     <article
       className='col-span-3 p-4 mb-4 bg-gray-800 rounded-md'
-      data-cy={`review-${review.user_id.username}-${review.book_id}`}
+      data-cy={`review-${username}-${review.book_id}`}
     >
       <div className='flex items-center justify-center w-full h-max'>
         <div
-          className='grid w-16 h-16 mr-4 rounded-full place-items-center bg-slate-500'
-          data-cy={`review-${review.user_id.username}-${review.book_id}-avatar-url`}
+          data-cy={`review-${username}-${review.book_id}-avatar-url`}
+          className='mr-2'
         >
-          {avatar_url ? (
-            <Image src={avatar_url} alt={username} />
-          ) : (
-            <p>{username[0]}</p>
-          )}
+          <Avatar
+            username={username}
+            userID={user_id}
+            url={avatar_url}
+            size='medium'
+          />
         </div>
         <div>
-          <div
-            data-cy={`review-${review.user_id.username}-${review.book_id}-username`}
-          >
+          <div data-cy={`review-${username}-${review.book_id}-username`}>
             {username}
           </div>
-          <div
-            data-cy={`review-${review.user_id.username}-${review.book_id}-score`}
-          >
+          <div data-cy={`review-${username}-${review.book_id}-score`}>
             {score}/10
           </div>
         </div>
@@ -71,16 +71,14 @@ JSX.Element => {
               <p>|</p>
             </>
           )}
-          <p
-            data-cy={`review-${review.user_id.username}-${review.book_id}-post-time`}
-          >
+          <p data-cy={`review-${username}-${review.book_id}-post-time`}>
             Posted {review_post_time && stringToMonthDayYear(review_post_time)}
           </p>
         </div>
       </div>
       <div
         className='mt-4'
-        data-cy={`review-${review.user_id.username}-${review.book_id}-text`}
+        data-cy={`review-${username}-${review.book_id}-text`}
       >
         {reviewText}
       </div>

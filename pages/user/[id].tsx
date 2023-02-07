@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { Avatar } from '../../components/Avatar';
 import { Card } from '../../components/Card';
 import { RecentActivity } from '../../components/RecentActivity';
 
@@ -13,14 +14,15 @@ export default function UserPage() {
   const [user, setUser] = useState<any>(null);
   const [favorites, setFavorites] = useState<any>(null);
   const [recentActivity, setRecentActivity] = useState<any>(null);
-
   useEffect(() => {
     if (!router.query.id) return;
 
     const fetchUser = async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('username, summary, id, read_list(pages_read, score, status)')
+        .select(
+          'username, summary, id, avatar_url, read_list(pages_read, score, status)'
+        )
         .eq('username', router.query.id);
 
       if (error) {
@@ -108,13 +110,13 @@ export default function UserPage() {
     <div className='grid grid-flow-col grid-cols-12 gap-4'>
       <div className='flex flex-col h-full col-span-3 gap-4'>
         <Card flex={'flex'} dataCy='profile-avatar'>
-          <div className='grid w-32 h-32 mr-4 rounded-full place-items-center bg-slate-500'>
-            {user?.avatar_url ? (
-              <Image src={user.avatar_url} alt={user.username} />
-            ) : (
-              <p>{user?.username[0]}</p>
-            )}
-          </div>
+          <Avatar
+            username={user?.username}
+            userID={user?.id}
+            url={user?.avatar_url}
+            customizable={true}
+            size='large'
+          />
           <p className='self-center'>{user?.username}</p>
         </Card>
 

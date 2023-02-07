@@ -111,8 +111,9 @@ insert into storage.buckets (id, name)
 create policy "Avatar images are publicly accessible." on storage.objects
   for select using (bucket_id = 'avatars');
 
-create policy "Anyone can upload an avatar." on storage.objects
-  for insert with check (bucket_id = 'avatars');
+CREATE POLICY "Give users access to their own folder and insert" ON storage.objects FOR INSERT TO public WITH CHECK (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+CREATE POLICY "Give users access to their own folder and update" ON storage.objects FOR UPDATE TO public USING (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+CREATE POLICY "Give users access to own folder and delete" ON storage.objects FOR DELETE TO public USING (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
 
 create or replace function get_book_stats(book_id_to_check text)
   returns setof record language sql as $$

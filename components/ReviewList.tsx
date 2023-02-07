@@ -18,13 +18,20 @@ export const ReviewList = ({
   const user = useUser();
   // to keep it simple, we will separate the user's review from the other reviews
   const [userReview, setUserReview] = useState(
-    {} as Omit<Database['public']['Tables']['read_list']['Row'], 'user_id'> & {
-      user_id: { username: string; avatar_url: string };
+    {} as Database['public']['Tables']['read_list']['Row'] & {
+      profiles: {
+        username: string;
+        avatar_url: string;
+      };
     }
   );
+
   const [reviews, setReviews] = useState(
-    [] as (Omit<Database['public']['Tables']['read_list']['Row'], 'user_id'> & {
-      user_id: { username: string; avatar_url: string };
+    [] as (Database['public']['Tables']['read_list']['Row'] & {
+      profiles: {
+        username: string;
+        avatar_url: string;
+      };
     })[]
   );
 
@@ -60,7 +67,7 @@ export const ReviewList = ({
       if (user) {
         const { data: userReview } = await supabase
           .from('read_list')
-          .select('*, user_id (username, avatar_url)')
+          .select('*, profiles (username, avatar_url)')
           .eq('user_id', user?.id)
           .eq('book_id', id);
 
@@ -71,7 +78,7 @@ export const ReviewList = ({
 
       const { data: otherReviews, error } = await supabase
         .from('read_list')
-        .select('*, user_id (username, avatar_url)')
+        .select('*, profiles (username, avatar_url)')
         .lte('review_post_time', initialReviewLoadTime)
         .eq('book_id', id)
         .neq('user_id', user?.id)
@@ -108,10 +115,13 @@ export const ReviewList = ({
 
     setUserReview({
       ...userBookInformation,
-      user_id: { username: user?.user_metadata?.username, avatar_url: '' },
       book_id: id,
       review: reviewRef.current?.value,
       review_post_time: new Date().toISOString(),
+      profiles: {
+        username: user?.user_metadata?.username,
+        avatar_url: user?.user_metadata?.avatar_url,
+      },
     });
     setShowReviewCreation(false);
   };
