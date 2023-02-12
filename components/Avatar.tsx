@@ -1,10 +1,10 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Spinner } from 'phosphor-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Database } from '../lib/types/supabase';
 import { ChangeAvatar } from './ChangeAvatar';
+import Loading from './Loading';
 
 type Profiles = Database['public']['Tables']['profiles']['Row'];
 
@@ -14,6 +14,7 @@ interface Props {
   url: string;
   customizable?: boolean;
   size: 'small' | 'medium' | 'large';
+  'data-cy'?: string;
 }
 
 export const Avatar = ({
@@ -22,6 +23,7 @@ export const Avatar = ({
   customizable,
   userID,
   size,
+  'data-cy': dataCy,
 }: Props) => {
   const router = useRouter();
   const supabase = useSupabaseClient();
@@ -30,7 +32,8 @@ export const Avatar = ({
   const [avatarURL, setAvatarURL] = useState<Profiles['avatar_url']>(null);
   const [downloadedAvatar, setDownloadedAvatar] = useState(false);
   const [filePath, setFilePath] = useState<string | null>(url);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const avatarRef = useRef<HTMLInputElement>(null);
 
   const changeAvatar = () => {
     window.event?.preventDefault();
@@ -64,7 +67,7 @@ export const Avatar = ({
     router.push(`/user/${username}`);
   };
 
-  const uploadAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadAvatar = async () => {
     window.event?.preventDefault();
     if (!user) return;
 
@@ -73,11 +76,11 @@ export const Avatar = ({
     setDownloadedAvatar(false);
 
     try {
-      if (!event.target.files || event.target.files.length === 0) {
+      if (!avatarRef?.current?.files || avatarRef.current.files.length == 0) {
         throw new Error('You must select an image to upload.');
       }
 
-      const file = event.target.files[0];
+      const file = avatarRef.current.files[0];
       const fileExtension = file.name.split('.').pop();
       const fileName = `${userID}.${fileExtension}`;
       const filePath = `${userID}/${fileName}`;
@@ -128,6 +131,7 @@ export const Avatar = ({
   const deleteAvatar = async () => {
     window.event?.preventDefault();
     if (!user) return;
+    setLoading(true);
 
     try {
       // delete avatar from storage
@@ -171,6 +175,8 @@ export const Avatar = ({
     } catch (error) {
       alert('Error deleting avatar!');
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -183,35 +189,39 @@ export const Avatar = ({
   }, [filePath]);
 
   useEffect(() => {
-    if (!filePath || downloadedAvatar) return;
+    if (!filePath || downloadedAvatar) return setLoading(false);
 
     downloadAvatar();
   }, [downloadAvatar, filePath, downloadedAvatar]);
 
   return (
     <div
-      className={`relative grid text-blue-100 rounded-full place-items-center bg-slate-500 ${
+      className={`relative grid text-blue-100 rounded-full bg-slate-500 items-center ${
         !isChangeAvatarActive && 'cursor-pointer'
       } ${
         (size == 'small' && 'w-10 h-10') ||
         (size == 'medium' && 'w-20 h-20') ||
         (size == 'large' && 'w-32 h-32')
       }`}
+      data-cy={dataCy}
     >
       {!loading && (
         <Image
           src={avatarURL || '/blankAvatar.png'}
           alt={`${username}'s avatar`}
           fill
-          className={`rounded-full object-cover ${customizable && ''}`}
+          className={`rounded-full object-cover`}
           onClick={openProfile}
+          data-cy={`${dataCy}-image`}
         />
       )}
 
-      {customizable && (
+      {loading && <Loading data-cy={`loading-avatar-${username}`} />}
+
+      {customizable && !loading && (
         <div
           onClick={changeAvatar}
-          className='z-10 grid items-center w-full h-full text-center duration-200 rounded-full text-white/0 hover:bg-black/70 hover:text-white/100'
+          className='z-10 grid items-center w-full h-full text-center duration-200 border-2 rounded-full text-white/0 hover:bg-black/70 hover:text-white/100'
         >
           Edit Avatar
         </div>
@@ -224,6 +234,7 @@ export const Avatar = ({
           closeChangeAvatar={() => {
             setIsChangeAvatarActive(false);
           }}
+          avatarRef={avatarRef}
         />
       )}
     </div>

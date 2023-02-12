@@ -47,6 +47,7 @@ JSX.Element => {
             userID={user_id}
             url={avatar_url}
             size='medium'
+            data-cy={`review-avatar-${username}`}
           />
         </div>
         <div>

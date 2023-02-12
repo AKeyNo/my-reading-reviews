@@ -109,19 +109,20 @@ export default function UserPage() {
   return (
     <div className='grid grid-flow-col grid-cols-12 gap-4'>
       <div className='flex flex-col h-full col-span-3 gap-4'>
-        <Card flex={'flex'} dataCy='profile-avatar'>
+        <Card flex={'flex justify-evenly'}>
           <Avatar
             username={user?.username}
             userID={user?.id}
             url={user?.avatar_url}
             customizable={true}
             size='large'
+            data-cy='profile-avatar'
           />
           <p className='self-center'>{user?.username}</p>
         </Card>
 
         {user && (
-          <Card dataCy='profile-stats'>
+          <Card data-cy='profile-stats'>
             <h2 className='font-semibold'>Stats</h2>
             <p>Total Books: {user?.read_list?.length}</p>
             <p>Books Read: {totalBooksFinished()}</p>
@@ -131,14 +132,14 @@ export default function UserPage() {
         )}
       </div>
       <div className='flex flex-col h-full col-span-9 gap-4'>
-        <Card dataCy='profile-summary'>{user?.summary}</Card>
-        <Card flex={'flex flex-col'} dataCy='profile-recent-activity'>
+        <Card data-cy='profile-summary'>{user?.summary}</Card>
+        <Card flex={'flex flex-col'} data-cy='profile-recent-activity'>
           <h2 className='mb-4 font-semibold'>Recent Activity</h2>
           {recentActivity?.map((book: any, key: string) => (
             <RecentActivity user={user} book={book} key={key} />
           ))}
         </Card>
-        <Card flex={'flex flex-col'} dataCy='profile-favorites'>
+        <Card flex={'flex flex-col'} data-cy='profile-favorites'>
           <h2 className='mb-4 font-semibold'>Favorites</h2>
           <div className='flex space-x-2'>
             {favorites?.map((book: any, key: string) => (

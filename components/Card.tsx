@@ -1,12 +1,10 @@
 import { PropsWithChildren } from 'react';
 
-// dataCy is used for testing with Cypress as it can't be accessed when using data-cy
-// when calling this component
 export const Card: React.FC<PropsWithChildren<any>> = ({
   children,
   colSpan,
   flex,
-  dataCy,
+  'data-cy': dataCy,
 }) => {
   return (
     <div

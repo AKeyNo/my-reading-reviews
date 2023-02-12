@@ -1,6 +1,7 @@
 export interface ChangeAvatarFields {
-  uploadAvatar: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  uploadAvatar: () => Promise<void>;
   deleteAvatar: () => Promise<void>;
   closeChangeAvatar: () => void;
   isChangeAvatarActive: boolean;
+  avatarRef: React.RefObject<HTMLInputElement>;
 }
