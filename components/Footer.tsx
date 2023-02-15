@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const Footer = () => {
   return (
-    <footer className='flex items-center mt-4 h-14 bg-stone-900 px-72'>
+    <footer className='z-50 flex items-center mt-4 h-14 bg-stone-900 px-72'>
       <div>
         <p className='text-xs'>
           Google Books™ service is a trademark of Google LLC.
