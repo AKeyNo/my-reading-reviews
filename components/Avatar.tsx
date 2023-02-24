@@ -11,10 +11,11 @@ type Profiles = Database['public']['Tables']['profiles']['Row'];
 interface Props {
   username: string;
   userID: string;
-  url: string;
+  url: string | null;
   customizable?: boolean;
   size: 'small' | 'medium' | 'large';
   'data-cy'?: string;
+  className?: string;
 }
 
 export const Avatar = ({
@@ -24,6 +25,7 @@ export const Avatar = ({
   userID,
   size,
   'data-cy': dataCy,
+  className,
 }: Props) => {
   const router = useRouter();
   const supabase = useSupabaseClient();
@@ -202,7 +204,7 @@ export const Avatar = ({
         (size == 'small' && 'w-10 h-10') ||
         (size == 'medium' && 'w-20 h-20') ||
         (size == 'large' && 'w-32 h-32')
-      }`}
+      } ${className}`}
       data-cy={dataCy}
     >
       {!loading && (

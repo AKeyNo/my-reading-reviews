@@ -153,7 +153,9 @@ export default function UserPage() {
             size='large'
             data-cy='profile-avatar'
           />
-          <p className='self-center'>{profileUser?.username}</p>
+          <p className='self-center' data-cy='profile-username'>
+            {profileUser?.username}
+          </p>
         </Card>
 
         {profileUser && (

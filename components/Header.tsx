@@ -53,6 +53,11 @@ export const Header = () => {
             Search
           </Link>
         </section>
+        <section className='duration-150 hover:text-white'>
+          <Link href='/search/user' data-cy='header-user-search'>
+            Users
+          </Link>
+        </section>
       </div>
       {user ? (
         <div
