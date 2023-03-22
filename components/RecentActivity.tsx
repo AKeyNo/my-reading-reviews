@@ -31,16 +31,16 @@ export const RecentActivity = ({ user, book }: Props) => {
 
   return (
     <div className='flex items-center'>
-      <Link href={`/book/${book.book_id}`} passHref>
+      <Link href={`/book/${book.book_id}`} passHref className='mr-2'>
         <Image
           src={cover || '/missingBookImage.png'}
           alt={title || 'Missing Book Name'}
           width={100}
           height={100}
-          className='inline w-12 mr-4 rounded-md'
+          className='inline w-12 rounded-md'
         />
       </Link>
-      <p className=''>
+      <p>
         <Link
           href={`/user/${user.username}`}
           className='font-semibold text-gray-200 duration-200 hover:text-white'

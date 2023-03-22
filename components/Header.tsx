@@ -28,14 +28,14 @@ export const Header = () => {
   }, [supabase, user]);
 
   return (
-    <header className='z-50 flex items-center mb-4 h-14 bg-stone-900 px-72'>
-      <div className='mr-4 text-xl font-semibold'>
+    <header className='z-50 flex items-center px-4 mb-4 h-14 bg-stone-900 md:px-16 lg:px-72'>
+      <div className='hidden mr-2 font-semibold sm:block text-md lg:text-lg lg:mr-4'>
         <Link href='/' data-cy='header-logo'>
           My Reading Reviews
         </Link>
       </div>
 
-      <div className='flex space-x-8 font-semibold text-gray-300'>
+      <div className='flex mr-2 space-x-2 font-semibold text-gray-300 lg:text-md md:space-x-4 lg:space-x-8'>
         <section className='duration-150 hover:text-white'>
           <Link href='/' data-cy='header-home'>
             Home
