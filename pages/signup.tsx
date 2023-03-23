@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { GetServerSidePropsContext } from 'next';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Card } from '../components/Card';
 
 export default function SignUp() {
   const router = useRouter();
@@ -115,8 +116,8 @@ export default function SignUp() {
   }, [userFields]);
 
   return (
-    <div className='flex flex-col items-center w-1/2 p-12 mx-auto mt-4 bg-gray-800 rounded-2xl'>
-      <h1 className='text-2xl font-bold'>Sign Up</h1>
+    <Card className='w-full max-w-xl mx-auto'>
+      <h1 className='text-2xl font-bold text-center'>Sign Up</h1>
       <form
         className='flex flex-col items-center justify-center w-11/12 mt-4'
         onSubmit={signUpSubmit}
@@ -247,7 +248,7 @@ export default function SignUp() {
           </Link>
         </p>
       </form>
-    </div>
+    </Card>
   );
 }
 

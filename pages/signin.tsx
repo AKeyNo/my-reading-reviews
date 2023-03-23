@@ -4,6 +4,7 @@ import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { Card } from '../components/Card';
 import { AuthErrors, AuthFields } from '../lib/types/auth';
 
 export default function SignIn() {
@@ -57,8 +58,8 @@ export default function SignIn() {
   };
 
   return (
-    <div className='flex flex-col items-center w-1/2 p-12 mx-auto mt-4 bg-gray-800 rounded-2xl'>
-      <h1 className='text-2xl font-bold'>Sign In</h1>
+    <Card className='w-full max-w-xl mx-auto'>
+      <h1 className='text-2xl font-bold text-center'>Sign In</h1>
       <form
         className='flex flex-col items-center justify-center w-11/12 mt-4'
         onSubmit={signInSubmit}
@@ -123,7 +124,7 @@ export default function SignIn() {
           </Link>
         </p>
       </form>
-    </div>
+    </Card>
   );
 }
 
