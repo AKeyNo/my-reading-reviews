@@ -36,7 +36,7 @@ export const LatestActivity = () => {
   }, [supabase]);
 
   return (
-    <Card>
+    <Card className='w-full'>
       <h2 className='mb-4 font-semibold'>Latest Activity</h2>
       {loading && <Loading />}
       {!loading &&

@@ -28,97 +28,99 @@ export const Header = () => {
   }, [supabase, user]);
 
   return (
-    <header className='z-50 flex items-center px-4 mb-4 h-14 bg-stone-900 md:px-16 lg:px-72'>
-      <div className='mr-2 font-semibold text-center text-md lg:text-lg lg:mr-4'>
-        <Link href='/' data-cy='header-logo'>
-          My Reading Reviews
-        </Link>
-      </div>
-
-      <div className='flex mr-2 space-x-2 font-semibold text-gray-300 lg:text-md md:space-x-4 lg:space-x-8'>
-        <section className='hidden duration-150 md:block hover:text-white'>
-          <Link href='/' data-cy='header-home'>
-            Home
+    <header className='z-50 h-14 bg-stone-900'>
+      <div className='flex items-center h-full max-w-screen-lg p-4 mx-auto'>
+        <div className='mr-2 font-semibold text-center text-md'>
+          <Link href='/' data-cy='header-logo'>
+            My Reading Reviews
           </Link>
-        </section>
-        {user && (
-          <section className='duration-150 hover:text-white'>
-            <Link href={`/user/${username}`} data-cy='header-profile'>
-              Profile
+        </div>
+
+        <div className='flex mr-2 space-x-2 font-semibold text-gray-300'>
+          <section className='hidden duration-150 sm:block hover:text-white'>
+            <Link href='/' data-cy='header-home'>
+              Home
             </Link>
           </section>
-        )}
-        <section className='duration-150 hover:text-white'>
-          <Link href='/search/book' data-cy='header-search'>
-            Search
-          </Link>
-        </section>
-        <section className='duration-150 hover:text-white'>
-          <Link href='/search/user' data-cy='header-user-search'>
-            Users
-          </Link>
-        </section>
-      </div>
-      {user ? (
-        <div
-          className='relative flex items-center h-full ml-auto space-x-2 text-blue-500 duration-200 cursor-pointer hover:text-blue-400 group'
-          onMouseOver={() => setIsShowingUserMenu(true)}
-          onMouseLeave={() => setIsShowingUserMenu(false)}
-          data-cy='header-user-menu'
-        >
-          <Avatar
-            username={username}
-            userID={user.id}
-            url={user.user_metadata.avatar_url}
-            size='small'
-          />
-          <p data-cy='header-user-menu-username'>{`${username}`}</p>
-          <CaretDown size={16} weight='bold' />
-
-          {/* drop down menu */}
+          {user && (
+            <section className='duration-150 hover:text-white'>
+              <Link href={`/user/${username}`} data-cy='header-profile'>
+                Profile
+              </Link>
+            </section>
+          )}
+          <section className='duration-150 hover:text-white'>
+            <Link href='/search/book' data-cy='header-search'>
+              Search
+            </Link>
+          </section>
+          <section className='duration-150 hover:text-white'>
+            <Link href='/search/user' data-cy='header-user-search'>
+              Users
+            </Link>
+          </section>
+        </div>
+        {user ? (
           <div
-            className={`absolute right-0 top-full flex flex-col p-2 py-2 duration-150 bg-gray-800 border border-gray-900 rounded-md shadow-md items-start group-hover:opacity-100 ${
-              !isShowingUserMenu && 'opacity-0 pointer-events-none top-4'
-            }`}
+            className='relative flex items-center h-full ml-auto space-x-2 text-blue-500 duration-200 cursor-pointer hover:text-blue-400 group'
+            onMouseOver={() => setIsShowingUserMenu(true)}
+            onMouseLeave={() => setIsShowingUserMenu(false)}
+            data-cy='header-user-menu'
           >
-            <button
-              onClick={() => router.push(`/user/${username}`)}
-              className='flex items-center w-32 py-1 space-x-2 text-gray-400 duration-200 text-start hover:text-white'
+            <Avatar
+              username={username}
+              userID={user.id}
+              url={user.user_metadata.avatar_url}
+              size='small'
+            />
+            <p data-cy='header-user-menu-username'>{`${username}`}</p>
+            <CaretDown size={16} weight='bold' />
+
+            {/* drop down menu */}
+            <div
+              className={`absolute right-0 top-full flex flex-col p-2 py-2 duration-150 bg-gray-800 border border-gray-900 rounded-md shadow-md items-start group-hover:opacity-100 ${
+                !isShowingUserMenu && 'opacity-0 pointer-events-none top-4'
+              }`}
             >
-              <User size={16} weight='bold' />
-              <p>Profile</p>
-            </button>
-            <button
-              onClick={() => {
-                setIsShowingUserMenu(false);
-                supabase.auth.signOut();
-              }}
-              className='flex items-center w-32 py-1 space-x-2 text-gray-400 duration-200 text-start hover:text-white'
-              data-cy='header-sign-out-button'
-            >
-              <SignOut size={16} weight='bold' />
-              <p>Logout</p>
-            </button>
+              <button
+                onClick={() => router.push(`/user/${username}`)}
+                className='flex items-center w-32 py-1 space-x-2 text-gray-400 duration-200 text-start hover:text-white'
+              >
+                <User size={16} weight='bold' />
+                <p>Profile</p>
+              </button>
+              <button
+                onClick={() => {
+                  setIsShowingUserMenu(false);
+                  supabase.auth.signOut();
+                }}
+                className='flex items-center w-32 py-1 space-x-2 text-gray-400 duration-200 text-start hover:text-white'
+                data-cy='header-sign-out-button'
+              >
+                <SignOut size={16} weight='bold' />
+                <p>Logout</p>
+              </button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className='flex ml-auto space-x-2 text-blue-500'>
-          <Link
-            href='/signin'
-            className='duration-200 hover:text-blue-300'
-            data-cy='header-sign-in-link'
-          >
-            Sign In
-          </Link>
-          <Link
-            href='/signup'
-            className='duration-200 hover:text-blue-300'
-            data-cy='header-sign-up-link'
-          >
-            Sign Up
-          </Link>
-        </div>
-      )}
+        ) : (
+          <div className='flex ml-auto space-x-2 text-blue-500'>
+            <Link
+              href='/signin'
+              className='duration-200 hover:text-blue-300'
+              data-cy='header-sign-in-link'
+            >
+              Sign In
+            </Link>
+            <Link
+              href='/signup'
+              className='duration-200 hover:text-blue-300'
+              data-cy='header-sign-up-link'
+            >
+              Sign Up
+            </Link>
+          </div>
+        )}
+      </div>
     </header>
   );
 };
