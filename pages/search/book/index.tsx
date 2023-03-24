@@ -106,9 +106,9 @@ export default function SearchBook() {
   }, [searchTitle, searchAuthor, searchPublisher, router]);
 
   return (
-    <div>
-      <form className='flex flex-row items-center w-full mb-2 space-x-2'>
-        <div className='w-4/12'>
+    <div className='w-full'>
+      <form className='flex flex-col items-center w-full mb-2 space-x-2 sm:flex-row'>
+        <div className='w-full sm:w-4/12'>
           <label className='block font-bold text-gray-400'>Search</label>
           <input
             className='w-full p-2 mt-4 bg-gray-700 rounded-md'
@@ -119,7 +119,7 @@ export default function SearchBook() {
             data-cy='search-input-book-title'
           />
         </div>
-        <div className='w-4/12'>
+        <div className='w-full sm:w-4/12'>
           <label className='block font-bold text-gray-400'>Author</label>
           <input
             className='w-full p-2 mt-4 bg-gray-700 rounded-md'
@@ -130,7 +130,7 @@ export default function SearchBook() {
             data-cy='search-input-book-author'
           />
         </div>
-        <div className='w-4/12'>
+        <div className='w-full sm:w-4/12'>
           <label className='block font-bold text-gray-400'>Publisher</label>
           <input
             className='w-full p-2 mt-4 bg-gray-700 rounded-md'
@@ -149,20 +149,22 @@ export default function SearchBook() {
         height={30}
       />
 
-      <div className='grid grid-cols-5 gap-x-4' data-cy='search-book-results'>
+      <div
+        className='grid grid-cols-2 gap-x-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'
+        data-cy='search-book-results'
+      >
         {books?.map((book: any, key: any) => (
           <div key={key} className='flex flex-col p-4 h-[23rem]'>
             <Link href={`/book/${book.id}`} passHref>
-              <Card>
+              <Card className='relative block h-64 w-36'>
                 <Image
                   alt={book.volumeInfo.title || 'Missing Book Name'}
                   src={
                     book.volumeInfo.imageLinks?.thumbnail ||
                     '/missingBookImage.png'
                   }
-                  width={200}
-                  height={200}
-                  className='w-full h-64 border-2 border-white'
+                  fill
+                  className='object-cover border-2 border-white'
                 />
               </Card>
             </Link>
