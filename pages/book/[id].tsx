@@ -87,8 +87,8 @@ export default function BookPage() {
 
   return (
     <div>
-      <div className='grid grid-cols-4 grid-rows-1 p-12 pt-0 border-b-4 border-gray-800'>
-        <div className='relative col-span-1 mr-4 text-center'>
+      <div className='grid grid-cols-1 grid-rows-1 p-12 pt-0 border-b-4 border-gray-800 sm:grid-cols-4'>
+        <div className='relative col-span-1 mr-0 text-center sm:mr-4'>
           <Image
             src={book.imageLinks?.thumbnail || '/missingBookImage.png'}
             alt={book.name || 'Missing Book Name'}
@@ -118,7 +118,7 @@ export default function BookPage() {
           />
         </Dialog>
         <div className='col-span-3'>
-          <div className='flex items-center pb-4 space-x-2'>
+          <div className='flex flex-col items-center pb-4 space-x-2 space-y-2 sm:space-y-0 sm:flex-row'>
             <h1 className='text-3xl text-center'>{book.title}</h1>
 
             {book?.previewLink && (
@@ -151,7 +151,7 @@ export default function BookPage() {
           </Card>
         </div>
       </div>
-      <div className='grid grid-cols-4 grid-rows-1 gap-4 p-12 border-t-0 flow-col'>
+      <div className='grid grid-cols-1 grid-rows-1 gap-4 p-12 border-t-0 sm:grid-cols-4 flow-col'>
         <div>
           <Card colSpan='col-span-1'>
             <div data-cy='book-information'>

@@ -86,7 +86,7 @@ export const ListEditor = ({
 
   return (
     <form
-      className='relative w-2/4 p-12 bg-gray-800 shadow-2xl'
+      className='relative w-full h-full p-12 bg-gray-800 shadow-2xl sm:h-auto sm:w-3/4'
       onSubmit={() => {
         window.event?.preventDefault();
         submitUserBookInformation();
@@ -111,8 +111,8 @@ export const ListEditor = ({
 
         <p className='font-semibold basis-10/12'>{book.title}</p>
       </div>
-      <div className='grid grid-cols-3 gap-2 py-2'>
-        <div className='colspan-2'>
+      <div className='grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3'>
+        <div className='w-full'>
           <label className='block'>Status</label>
           <select
             value={(status as string) || 'Reading'}
@@ -129,6 +129,7 @@ export const ListEditor = ({
                 });
               }
             }}
+            className='w-full'
             data-cy='list-editor-status'
           >
             <option value='Reading' selected>
@@ -141,7 +142,7 @@ export const ListEditor = ({
           </select>
         </div>
 
-        <div className='colspan-1'>
+        <div className='col-span-1'>
           <label className='block'>Score</label>
           <input
             type='number'
@@ -154,11 +155,12 @@ export const ListEditor = ({
                 score: parseInt(e.target.value),
               })
             }
+            className='w-full'
             data-cy='list-editor-score'
           />
         </div>
 
-        <div className='colspan-1'>
+        <div className='col-span-1'>
           <label className='block'>Pages Read</label>
           <input
             type='number'
@@ -171,11 +173,12 @@ export const ListEditor = ({
                 pages_read: parseInt(e.target.value),
               })
             }
+            className='w-full'
             data-cy='list-editor-pages-read'
           />
         </div>
 
-        <div className='colspan-1'>
+        <div className='col-span-1'>
           <label className='block'>Start Date</label>
           <input
             type='date'
@@ -188,10 +191,11 @@ export const ListEditor = ({
                 start_date: e.target.value,
               })
             }
+            className='w-full'
             data-cy='list-editor-start-date'
           />
         </div>
-        <div className='colspan-1'>
+        <div className='col-span-1'>
           <label className='block'>Finish Date</label>
           <input
             type='date'
@@ -204,6 +208,7 @@ export const ListEditor = ({
                 finish_date: e.target.value,
               })
             }
+            className='w-full'
             data-cy='list-editor-finish-date'
           />
         </div>
@@ -221,11 +226,12 @@ export const ListEditor = ({
                 times_reread: parseInt(e.target.value),
               })
             }
+            className='w-full'
             data-cy='list-editor-times-reread'
           />
         </div>
 
-        <div className='col-span-3'>
+        <div className='col-span-1 sm:col-span-2 md:col-span-3'>
           <label className='block'>Notes</label>
           <textarea
             className='w-full col-span-full'
