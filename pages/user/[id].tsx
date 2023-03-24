@@ -142,9 +142,9 @@ export default function UserPage() {
   };
 
   return (
-    <div className='grid grid-flow-col grid-cols-12 gap-4'>
-      <div className='flex flex-col h-full col-span-3 gap-4'>
-        <Card flex={'flex justify-evenly'}>
+    <div className='grid w-full grid-flow-row grid-cols-1 gap-4 sm:grid-flow-col sm:grid-cols-12'>
+      <div className='flex flex-col h-full col-span-1 gap-4 sm:col-span-3'>
+        <Card flex={'flex flex-col items-center justify-evenly'}>
           <Avatar
             username={profileUser?.username}
             userID={profileUser?.id}
@@ -168,7 +168,7 @@ export default function UserPage() {
           </Card>
         )}
       </div>
-      <div className='flex flex-col h-full col-span-9 gap-4'>
+      <div className='flex flex-col h-full col-span-1 gap-4 sm:col-span-9'>
         <Card className='relative' data-cy='profile-summary'>
           <div className='flex mb-4'>
             <h2 className='font-semibold '>Summary</h2>
@@ -233,19 +233,19 @@ export default function UserPage() {
         </Card>
         <Card flex={'flex flex-col'} data-cy='profile-favorites'>
           <h2 className='mb-4 font-semibold'>Favorites</h2>
-          <div className='flex space-x-2'>
+          <div className='grid grid-cols-4 gap-4 sm:grid-cols-4 md:grid-cols-5'>
             {favorites?.map((book: any, key: string) => (
               <Link
                 href={`/book/${book.book_id}`}
                 key={key}
                 passHref
-                className={`relative flex items-center h-44 basis-1/11`}
+                className={`relative h-44 block w-full`}
               >
                 <Image
                   src={book.cached_books.cover || '/missingBookImage.png'}
                   alt={book.name || 'Missing Book Name'}
                   fill
-                  className='inline object-cover w-full mr-4 rounded-md'
+                  className='object-cover rounded-md'
                   data-cy={`profile-favorite-book-${book.book_id}`}
                 />
               </Link>

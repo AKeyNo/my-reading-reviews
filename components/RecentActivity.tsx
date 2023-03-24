@@ -30,17 +30,20 @@ export const RecentActivity = ({ user, book }: Props) => {
   const { title, cover, total_pages: totalPages } = book.cached_information;
 
   return (
-    <div className='flex items-center'>
-      <Link href={`/book/${book.book_id}`} passHref className='mr-2'>
+    <div className='flex items-center mb-2'>
+      <Link
+        href={`/book/${book.book_id}`}
+        passHref
+        className='relative block mr-2 h-36 sm:h-24 basis-3/12 sm:basis-1/12'
+      >
         <Image
           src={cover || '/missingBookImage.png'}
           alt={title || 'Missing Book Name'}
-          width={100}
-          height={100}
-          className='inline w-12 rounded-md'
+          fill
+          className='object-cover rounded-md'
         />
       </Link>
-      <p>
+      <p className='basis-9/12 sm:basis-11/12'>
         <Link
           href={`/user/${user.username}`}
           className='font-semibold text-gray-200 duration-200 hover:text-white'
