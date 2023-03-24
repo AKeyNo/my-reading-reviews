@@ -114,7 +114,7 @@ export default function SearchUser() {
   }, [searchUsername, router]);
 
   return (
-    <div>
+    <div className='w-full'>
       {/* search */}
       <form className='mb-2'>
         <label className='block mb-4 font-bold text-gray-400'>
