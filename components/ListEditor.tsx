@@ -86,7 +86,7 @@ export const ListEditor = ({
 
   return (
     <form
-      className='relative w-full h-full p-12 bg-gray-800 shadow-2xl sm:h-auto sm:w-3/4'
+      className='box-content relative w-full h-full max-w-screen-md p-8 mx-auto overflow-y-auto bg-gray-800 shadow-2xl max-h-[41rem] sm:p-12 sm:h-auto sm:w-3/4'
       onSubmit={() => {
         window.event?.preventDefault();
         submitUserBookInformation();
@@ -95,7 +95,7 @@ export const ListEditor = ({
     >
       <button
         onClick={closeListEditor}
-        className='absolute duration-200 right-12 hover:bg-red-800'
+        className='absolute duration-200 right-4 sm:right-12 hover:bg-red-800'
       >
         <X size={32} weight='thin' data-cy='list-editor-close-button' />
       </button>

@@ -40,7 +40,7 @@ export const ChangeAvatar = ({
 
   return (
     <Dialog isActive={isChangeAvatarActive} data-cy='change-avatar-dialog'>
-      <div className='relative w-full h-56 p-12 bg-gray-800 shadow-2xl sm:h-auto sm:w-auto'>
+      <div className='relative flex w-full h-full p-12 bg-gray-800 shadow-2xl sm:h-auto sm:w-auto max-h-64'>
         <button
           type='button'
           onClick={() => {
@@ -69,7 +69,7 @@ export const ChangeAvatar = ({
             ref={avatarRef}
             data-cy='avatar-upload-input'
           />
-          <div className='flex justify-between gap-4'>
+          <div className='flex justify-between w-full gap-4'>
             <button
               className={`p-4 px-8 font-semibold duration-150 bg-gray-700 rounded-md pointer-events-none ${
                 avatarIsValid &&
