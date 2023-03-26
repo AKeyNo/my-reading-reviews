@@ -12,6 +12,7 @@ import Loading from '../../components/Loading';
 import { Card } from '../../components/Card';
 import { BookStats } from '../../lib/types/bookStats';
 import Link from 'next/link';
+import Head from 'next/head';
 
 export default function BookPage() {
   const supabase = useSupabaseClient();
@@ -87,11 +88,15 @@ export default function BookPage() {
 
   return (
     <div>
+      <Head>
+        <title>{book?.title ? `${book.title}` : 'Loading...'}</title>
+      </Head>
+
       <div className='grid grid-cols-1 grid-rows-1 p-12 pt-0 border-b-4 border-gray-800 sm:grid-cols-4'>
         <div className='relative col-span-1 mr-0 text-center sm:mr-4'>
           <Image
             src={book.imageLinks?.thumbnail || '/missingBookImage.png'}
-            alt={book.name || 'Missing Book Name'}
+            alt={book.title || 'Missing Book Name'}
             width={200}
             height={300}
             className='w-48 mx-auto rounded-md'

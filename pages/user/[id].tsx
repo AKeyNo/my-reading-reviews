@@ -1,4 +1,5 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -143,6 +144,14 @@ export default function UserPage() {
 
   return (
     <div className='grid w-full grid-flow-row grid-cols-1 gap-4 sm:grid-flow-col sm:grid-cols-12'>
+      <Head>
+        <title>
+          {profileUser?.username
+            ? `${profileUser.username}'s profile`
+            : 'Loading...'}
+        </title>
+      </Head>
+
       <div className='flex flex-col h-full col-span-1 gap-4 sm:col-span-3'>
         <Card flex={'flex flex-col items-center justify-evenly'}>
           <Avatar

@@ -13,24 +13,23 @@ interface Props {
 
 export default function Home({ session }: Props) {
   return (
-    <>
+    <div className='flex flex-col w-full'>
       <Head>
         <title>My Reading Reviews - Keep track of your readings easily.</title>
       </Head>
-      <div className='flex flex-col w-full'>
-        {!session && (
-          <div className='p-12 mb-12 text-center bg-gray-800 border-4 border-gray-700 rounded-md'>
-            <h2 className='text-4xl font-bold'>Keep track of your readings.</h2>
-            <h3 className='py-8 text-xl font-semibold text-blue-300'>
-              Easy, quick, and made for readers.
-            </h3>
-            {!session && <AuthButtons />}
-          </div>
-        )}
 
-        <LatestActivity />
-      </div>
-    </>
+      {!session && (
+        <div className='p-12 mb-12 text-center bg-gray-800 border-4 border-gray-700 rounded-md'>
+          <h2 className='text-4xl font-bold'>Keep track of your readings.</h2>
+          <h3 className='py-8 text-xl font-semibold text-blue-300'>
+            Easy, quick, and made for readers.
+          </h3>
+          {!session && <AuthButtons />}
+        </div>
+      )}
+
+      <LatestActivity />
+    </div>
   );
 }
 

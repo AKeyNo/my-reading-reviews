@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -107,6 +108,10 @@ export default function SearchBook() {
 
   return (
     <div className='w-full'>
+      <Head>
+        <title>Book Search</title>
+      </Head>
+
       <form className='flex flex-col items-center w-full mb-2 space-x-2 sm:flex-row'>
         <div className='w-full sm:w-4/12'>
           <label className='block font-bold text-gray-400'>Search</label>

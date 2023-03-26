@@ -1,4 +1,5 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -115,6 +116,10 @@ export default function SearchUser() {
 
   return (
     <div className='w-full'>
+      <Head>
+        <title>User Search</title>
+      </Head>
+
       {/* search */}
       <form className='mb-2'>
         <label className='block mb-4 font-bold text-gray-400'>

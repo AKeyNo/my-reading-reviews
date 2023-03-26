@@ -6,6 +6,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { GetServerSidePropsContext } from 'next';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Card } from '../components/Card';
+import Head from 'next/head';
 
 export default function SignUp() {
   const router = useRouter();
@@ -117,6 +118,10 @@ export default function SignUp() {
 
   return (
     <Card className='w-full max-w-xl mx-auto'>
+      <Head>
+        <title>Sign Up</title>
+      </Head>
+
       <h1 className='text-2xl font-bold text-center'>Sign Up</h1>
       <form
         className='flex flex-col items-center justify-center w-11/12 mt-4'
