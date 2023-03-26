@@ -1,6 +1,12 @@
+import Head from 'next/head';
+import { Card } from '../../../components/Card';
+
 export default function PrivacyPolicy() {
   return (
-    <div>
+    <Card>
+      <Head>
+        <title>Privacy Policy</title>
+      </Head>
       <h1 className='text-4xl font-bold'>Privacy Policy</h1>
       <p>Last updated: January 29, 2023</p>
       <p>
@@ -533,6 +539,6 @@ export default function PrivacyPolicy() {
       <ul className='pl-8 list-disc'>
         <li>By email: arielaquino.cs@gmail.com</li>
       </ul>
-    </div>
+    </Card>
   );
 }
