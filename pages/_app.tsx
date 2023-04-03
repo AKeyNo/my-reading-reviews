@@ -5,6 +5,8 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
 import { Layout } from '../components/Layout';
+import { store } from '../store';
+import { Provider } from 'react-redux';
 
 export default function App({
   Component,
@@ -15,13 +17,15 @@ export default function App({
   const [supabase] = useState(() => createBrowserSupabaseClient());
 
   return (
-    <SessionContextProvider
-      supabaseClient={supabase}
-      initialSession={pageProps.initialSession}
-    >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </SessionContextProvider>
+    <Provider store={store}>
+      <SessionContextProvider
+        supabaseClient={supabase}
+        initialSession={pageProps.initialSession}
+      >
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SessionContextProvider>
+    </Provider>
   );
 }

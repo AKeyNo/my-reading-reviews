@@ -1,25 +1,18 @@
 import { stringToMonthDayYear } from '../lib/utils/date';
-import { Database } from '../lib/types/supabase';
-import { User } from '@supabase/auth-helpers-react';
 import { Avatar } from './Avatar';
-
-interface Props {
-  review: Database['public']['Tables']['read_list']['Row'] & {
-    profiles: {
-      username: string;
-      avatar_url: string;
-    };
-  };
-  deleteOwnReview?: () => void;
-  user?: User | null;
-}
+import { Review as ReviewType } from '../lib/types/book';
+import { useAppDispatch } from '../lib/hooks/reduxHooks';
+import { deleteReview } from '../lib/slices/bookSlice';
+import { useUser } from '@supabase/auth-helpers-react';
 
 export const Review = ({
   review,
-  deleteOwnReview,
-  user,
-}: Props): // authorID: string
+}: {
+  review: ReviewType;
+}): // authorID: string
 JSX.Element => {
+  const user = useUser();
+  const dispatch = useAppDispatch();
   // if the review text is empty, return
   if (
     !review ||
@@ -31,6 +24,10 @@ JSX.Element => {
 
   const { score, user_id, review: reviewText, review_post_time } = review;
   const { username, avatar_url } = review.profiles;
+
+  const dispatchDeleteReview = () => {
+    dispatch(deleteReview());
+  };
 
   return (
     <article
@@ -59,10 +56,10 @@ JSX.Element => {
           </div>
         </div>
         <div className='flex ml-auto space-x-2 text-gray-400'>
-          {user?.user_metadata?.username === username && (
+          {user?.id === user_id && (
             <>
               <button
-                onClick={() => deleteOwnReview && deleteOwnReview()}
+                onClick={dispatchDeleteReview}
                 type='button'
                 className='duration-150 hover:text-red-500'
                 data-cy='review-delete-review-button'

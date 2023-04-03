@@ -38,18 +38,25 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 
     if (!user) return res.status(200).json(response.data.volumeInfo);
 
-    const { data, error } = await supabaseServerClient
+    const { data: userBookInformation } = await supabaseServerClient
       .from('read_list')
       .select('*')
       .eq('user_id', user.id)
       .eq('book_id', id)
       .maybeSingle();
 
-    if (!data || error) return res.status(200).json(response.data.volumeInfo);
+    const { data: bookStats, error: bookStatsResponseError } =
+      await supabaseServerClient.rpc('get_book_stats', {
+        book_id_to_check: id as string,
+      });
+
+    if (bookStatsResponseError)
+      return res.status(200).json(response.data.volumeInfo);
 
     return res.status(200).json({
-      ...response.data.volumeInfo,
-      userBookInformation: data,
+      volumeInfo: response.data.volumeInfo,
+      userBookInformation,
+      bookStats: bookStats[0],
     });
   } catch (error) {
     res.status(500).json({ message: error });

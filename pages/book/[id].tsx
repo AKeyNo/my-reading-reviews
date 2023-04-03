@@ -1,102 +1,63 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import parse from 'html-react-parser';
 import Image from 'next/image';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { useUser } from '@supabase/auth-helpers-react';
 import { Dialog } from '../../components/Dialog';
 import { ListEditor } from '../../components/ListEditor';
-import { Database } from '../../lib/types/supabase';
 import { ReviewList } from '../../components/ReviewList';
-import Loading from '../../components/Loading';
 import { Card } from '../../components/Card';
-import { BookStats } from '../../lib/types/bookStats';
 import Link from 'next/link';
 import Head from 'next/head';
+import {
+  clearBook,
+  fetchBookOnline,
+  openListEditor,
+} from '../../lib/slices/bookSlice';
+import { useAppDispatch, useAppSelector } from '../../lib/hooks/reduxHooks';
 
 export default function BookPage() {
-  const supabase = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
   const { id } = router.query;
-  const [book, setBook] = useState(null as any);
-  const [userBookInformation, setUserBookInformation] = useState(
-    {} as Database['public']['Tables']['read_list']['Row']
-  );
-  const [bookStats, setBookStats] = useState<BookStats>();
 
-  // helps handle the button that says "Add to List" or "Edit List" depending on if their review is online or not
-  const [isInformationIsOnline, setIsInformationIsOnline] = useState(false);
-  const [isShowingListEditor, setIsShowingListEditor] = useState(false);
+  const dispatch = useAppDispatch();
+  const book = useAppSelector((state) => state.book);
+
+  const { volumeInfo, bookStats } = book;
 
   useEffect(() => {
-    if (!id) return;
-
-    const fetchBook = async () => {
-      const response = await axios.get(`/api/book/${id}`);
-      const { data: bookStatsResponse } = await supabase.rpc('get_book_stats', {
-        book_id_to_check: id as string,
-      });
-
-      if (bookStatsResponse && bookStatsResponse[0])
-        setBookStats(bookStatsResponse[0] as BookStats);
-
-      setBook(response.data);
-
-      if (!user) {
-        return;
-      }
-
-      if (response.data.userBookInformation) {
-        setUserBookInformation(response.data.userBookInformation);
-        return setIsInformationIsOnline(true);
-      }
-
-      setUserBookInformation({
-        user_id: user.id,
-        book_id: id as string,
-        status: 'Reading',
-        score: 0,
-        pages_read: 0,
-        start_date: null,
-        finish_date: null,
-        times_reread: 0,
-        favorite: false,
-      } as Database['public']['Tables']['read_list']['Row']);
-
-      return setIsInformationIsOnline(false);
-    };
-
-    fetchBook();
-  }, [id, user, supabase]);
-
-  if (!book) return <Loading hScreen={true} />;
-
-  // we use amount to determine if we are adding or subtracting from the stats
-  const updateBookStats = async () => {
-    if (!bookStats || !userBookInformation) {
+    if (!id || book.status == 'succeeded') {
       return;
     }
 
-    const { data: bookStatsResponse } = await supabase.rpc('get_book_stats', {
-      book_id_to_check: id as string,
-    });
+    const fetchBook = async () => {
+      await dispatch(fetchBookOnline(id as string));
+    };
 
-    if (bookStatsResponse && bookStatsResponse[0])
-      setBookStats(bookStatsResponse[0] as BookStats);
-  };
+    fetchBook();
+  }, [id, book, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      // clear the book state
+      dispatch(clearBook());
+    };
+  }, [dispatch]);
 
   return (
-    <div>
+    <div className='w-full'>
       <Head>
-        <title>{book?.title ? `${book.title}` : 'Loading...'}</title>
+        <title>
+          {volumeInfo?.title ? `${volumeInfo?.title}` : 'Loading...'}
+        </title>
       </Head>
 
       <div className='grid grid-cols-1 grid-rows-1 p-12 pt-0 border-b-4 border-gray-800 sm:grid-cols-4'>
         <div className='relative col-span-1 mr-0 text-center sm:mr-4'>
           <Image
-            src={book.imageLinks?.thumbnail || '/missingBookImage.png'}
-            alt={book.title || 'Missing Book Name'}
+            src={volumeInfo?.imageLinks?.thumbnail || '/missingBookImage.png'}
+            alt={volumeInfo?.title || 'Missing Book Name'}
             width={200}
             height={300}
             className='w-48 mx-auto rounded-md'
@@ -104,31 +65,29 @@ export default function BookPage() {
 
           {user && (
             <button
-              onClick={() => setIsShowingListEditor(true)}
+              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                e.preventDefault();
+                dispatch(openListEditor());
+              }}
               className='w-4/5 p-4 mt-4 text-sm duration-100 bg-orange-700 rounded-md hover:bg-orange-800'
               data-cy='add-to-list-button'
             >
-              {isInformationIsOnline ? 'Edit Entry' : 'Add to List'}
+              {book.userBookInformation && book.status == 'succeeded'
+                ? 'Edit Entry'
+                : 'Add to List'}
             </button>
           )}
         </div>
-        <Dialog isActive={isShowingListEditor}>
-          <ListEditor
-            book={book}
-            userBookInformation={userBookInformation}
-            setUserBookInformation={setUserBookInformation}
-            closeListEditor={() => setIsShowingListEditor(false)}
-            setIsInformationOnline={setIsInformationIsOnline}
-            updateBookStats={updateBookStats}
-          />
+        <Dialog isActive={book.openedListEditor}>
+          <ListEditor />
         </Dialog>
         <div className='col-span-3'>
           <div className='flex flex-col items-center pb-4 space-x-2 space-y-2 sm:space-y-0 sm:flex-row'>
-            <h1 className='text-3xl text-center'>{book.title}</h1>
+            <h1 className='text-3xl text-center'>{volumeInfo?.title}</h1>
 
-            {book?.previewLink && (
+            {volumeInfo?.previewLink && (
               <Link
-                href={book.previewLink}
+                href={volumeInfo?.previewLink}
                 rel='noopener noreferrer'
                 target='_blank'
                 passHref
@@ -146,8 +105,8 @@ export default function BookPage() {
           </div>
 
           <Card>
-            {book?.description ? (
-              <p>{book.description && parse(book.description)}</p>
+            {volumeInfo?.description ? (
+              <p>{volumeInfo?.description && parse(volumeInfo?.description)}</p>
             ) : (
               <p>
                 <i className='italic'>There is no description provided.</i>
@@ -161,49 +120,49 @@ export default function BookPage() {
           <Card colSpan='col-span-1'>
             <div data-cy='book-information'>
               <h2 className='font-bold'>Information</h2>
-              {book.authors && (
+              {volumeInfo?.authors && (
                 <p className='text-gray-200' data-cy='book-information-authors'>
                   <strong className='font-semibold'>
-                    Author{book.authors.length > 1 && 's'}:
+                    Author{volumeInfo?.authors.length > 1 && 's'}:
                   </strong>{' '}
-                  {book.authors.join(', ')}
+                  {volumeInfo?.authors.join(', ')}
                 </p>
               )}
-              {book.pageCount && (
+              {volumeInfo?.pageCount && (
                 <p
                   className='text-gray-200'
                   data-cy='book-information-page-count'
                 >
                   <strong className='font-semibold'>Page Count:</strong>{' '}
-                  {book.pageCount}
+                  {volumeInfo?.pageCount}
                 </p>
               )}
-              {book.publishedDate && (
+              {volumeInfo?.publishedDate && (
                 <p
                   className='text-gray-200'
                   data-cy='book-information-published-date'
                 >
                   <strong className='font-semibold'>Published:</strong>{' '}
-                  {book.publishedDate}
+                  {volumeInfo?.publishedDate}
                 </p>
               )}
-              {book.publisher && (
+              {volumeInfo?.publisher && (
                 <p
                   className='text-gray-200'
                   data-cy='book-information-publisher'
                 >
                   <strong className='font-semibold'>Publisher:</strong>{' '}
-                  {book.publisher}
+                  {volumeInfo?.publisher}
                 </p>
               )}
-              {book.categories && (
+              {volumeInfo?.categories && (
                 <p
                   className='text-gray-200'
                   data-cy='book-information-categories'
                 >
                   <strong className='font-semibold'>Categories:</strong>
                   <br />
-                  {book.categories.join(`, `)}
+                  {volumeInfo?.categories.join(`, `)}
                 </p>
               )}
             </div>
@@ -279,11 +238,7 @@ export default function BookPage() {
             )}
           </Card>
         </div>
-        <ReviewList
-          id={id as string}
-          userBookInformation={userBookInformation}
-          isInformationIsOnline={isInformationIsOnline}
-        />
+        <ReviewList />
       </div>
     </div>
   );

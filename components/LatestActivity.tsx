@@ -26,7 +26,6 @@ export const LatestActivity = () => {
       }
 
       if (data) {
-        console.log(data);
         setLatestActivity(data);
       }
     };

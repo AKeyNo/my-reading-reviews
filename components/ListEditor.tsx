@@ -1,20 +1,48 @@
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import { Heart, X } from 'phosphor-react';
-import { ListEditorFields } from '../lib/types/listEditor';
-
-export const ListEditor = ({
-  book,
-  userBookInformation,
-  setUserBookInformation,
+import { useAppDispatch, useAppSelector } from '../lib/hooks/reduxHooks';
+import {
   closeListEditor,
-  setIsInformationOnline,
-  updateBookStats,
-}: ListEditorFields) => {
-  const supabase = useSupabaseClient();
+  deleteUserBookInformation,
+  submitUserBookInformation,
+} from '../lib/slices/bookSlice';
+import { useEffect, useState } from 'react';
+import { UserBookInformation } from '../lib/types/book';
+
+export const ListEditor = () => {
+  const dispatch = useAppDispatch();
   const user = useUser();
+  const book = useAppSelector((state) => state.book.volumeInfo);
+  const currentUserBookInformation = useAppSelector(
+    (state) => state.book.userBookInformation
+  );
+
+  useEffect(() => {
+    if (!currentUserBookInformation) {
+      return;
+    }
+
+    setUserBookInformation(currentUserBookInformation);
+  }, [currentUserBookInformation]);
+
+  const [userBookInformation, setUserBookInformation] =
+    useState<UserBookInformation>({
+      user_id: user?.id as string,
+      book_id: book.id as string,
+      status: 'reading',
+      score: 0,
+      pages_read: 0,
+      start_date: null,
+      finish_date: null,
+      times_reread: 0,
+      notes: '',
+      favorite: false,
+      review: '',
+      review_post_time: null,
+    });
+
   const {
-    book_id,
     status,
     score,
     pages_read,
@@ -25,76 +53,46 @@ export const ListEditor = ({
     favorite,
   } = userBookInformation;
 
-  const submitUserBookInformation = async () => {
-    window.event?.preventDefault();
+  const submitUserBookInformationOnline = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
     if (!user) return;
 
-    // cache the book image to save on querying too many times from Google Books
-    // this is used in displaying favorites and recently read book titles
-    const { error: cacheError } = await supabase.from('cached_books').upsert([
-      {
-        book_id: book_id,
+    dispatch(
+      submitUserBookInformation({
         title: book.title,
         cover: book.imageLinks?.smallThumbnail,
-        total_pages: book.pageCount,
-      },
-    ]);
+        totalPages: book.pageCount,
+        userBookInformation: userBookInformation,
+      })
+    );
 
-    if (cacheError) {
-      console.error('error', cacheError);
-    }
-
-    const { error: uploadError } = await supabase.from('read_list').upsert([
-      {
-        user_id: user.id,
-        book_id: book_id,
-        status: status,
-        score: score,
-        pages_read: pages_read,
-        start_date: start_date,
-        finish_date: finish_date,
-        times_reread: times_reread,
-        notes: notes,
-        favorite: favorite,
-      },
-    ]);
-    if (uploadError) {
-      console.error('error', uploadError);
-    }
-
-    setIsInformationOnline(true);
-    updateBookStats();
+    dispatch(closeListEditor());
   };
 
-  const deleteUserBookInformation = async () => {
+  const deleteUserBookInformationOnline = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     if (!user) return;
 
-    const { error } = await supabase
-      .from('read_list')
-      .delete()
-      .eq('user_id', user.id)
-      .eq('book_id', userBookInformation.book_id);
-
-    if (error) {
-      console.error('error', error);
-    }
-
-    setIsInformationOnline(false);
-    updateBookStats();
-    closeListEditor();
+    dispatch(deleteUserBookInformation());
+    dispatch(closeListEditor());
   };
 
   return (
     <form
       className='box-content relative w-full h-full max-w-screen-md p-8 mx-auto overflow-y-auto bg-gray-800 shadow-2xl max-h-[41rem] sm:p-12 sm:h-auto sm:w-3/4'
-      onSubmit={() => {
-        window.event?.preventDefault();
-        submitUserBookInformation();
-        closeListEditor();
+      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+        submitUserBookInformationOnline(e);
       }}
     >
       <button
-        onClick={closeListEditor}
+        onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+          e.preventDefault();
+          dispatch(closeListEditor());
+        }}
         className='absolute duration-200 right-4 sm:right-12 hover:bg-red-800'
       >
         <X size={32} weight='thin' data-cy='list-editor-close-button' />
@@ -263,7 +261,9 @@ export const ListEditor = ({
         </button>
         <button
           className='p-4 px-8 ml-auto mr-2 text-sm duration-150 bg-orange-700 rounded-md hover:bg-orange-800'
-          onClick={deleteUserBookInformation}
+          onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            deleteUserBookInformationOnline(e);
+          }}
           type='button'
           data-cy='list-editor-delete-button'
         >
