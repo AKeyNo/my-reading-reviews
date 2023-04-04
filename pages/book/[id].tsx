@@ -3,10 +3,10 @@ import { useEffect } from 'react';
 import parse from 'html-react-parser';
 import Image from 'next/image';
 import { useUser } from '@supabase/auth-helpers-react';
-import { Dialog } from '../../components/Dialog';
-import { ListEditor } from '../../components/ListEditor';
-import { ReviewList } from '../../components/ReviewList';
-import { Card } from '../../components/Card';
+import { Dialog } from '../../src/components/ui/Dialog';
+import { ListEditor } from '../../src/components/ui/ListEditor';
+import { ReviewList } from '../../src/components/review/ReviewList';
+import { Card } from '../../src/components/ui/Card';
 import Link from 'next/link';
 import Head from 'next/head';
 import {

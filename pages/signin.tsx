@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Card } from '../components/Card';
+import { Card } from '../src/components/ui/Card';
 import { AuthErrors, AuthFields } from '../lib/types/auth';
 
 export default function SignIn() {

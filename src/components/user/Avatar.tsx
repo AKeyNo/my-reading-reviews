@@ -2,9 +2,9 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Database } from '../lib/types/supabase';
+import { Database } from '../../../lib/types/supabase';
 import { ChangeAvatar } from './ChangeAvatar';
-import Loading from './Loading';
+import Loading from '../ui/Loading';
 
 type Profiles = Database['public']['Tables']['profiles']['Row'];
 

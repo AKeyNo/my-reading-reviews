@@ -3,8 +3,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Avatar } from '../../../components/Avatar';
-import Loading from '../../../components/Loading';
+import { Avatar } from '../../../src/components/user/Avatar';
+import Loading from '../../../src/components/ui/Loading';
 import { useScroll } from '../../../lib/hooks/useScroll';
 import { Database } from '../../../lib/types/supabase';
 

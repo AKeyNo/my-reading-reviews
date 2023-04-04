@@ -1,8 +1,8 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useEffect, useState } from 'react';
-import { Card } from './Card';
-import Loading from './Loading';
-import { RecentActivity } from './RecentActivity';
+import { Card } from '../ui/Card';
+import Loading from '../ui/Loading';
+import { RecentActivity } from '../activity/RecentActivity';
 
 export const LatestActivity = () => {
   const supabase = useSupabaseClient();

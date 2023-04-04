@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { GetServerSidePropsContext } from 'next';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { Card } from '../components/Card';
+import { Card } from '../src/components/ui/Card';
 import Head from 'next/head';
 
 export default function SignUp() {

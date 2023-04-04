@@ -4,7 +4,7 @@ import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
-import { Layout } from '../components/Layout';
+import { Layout } from '../src/components/layout/Layout';
 import { store } from '../store';
 import { Provider } from 'react-redux';
 

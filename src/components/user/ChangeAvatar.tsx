@@ -1,7 +1,7 @@
 import { X } from 'phosphor-react';
 import { useState } from 'react';
-import { ChangeAvatarFields } from '../lib/types/changeAvatar';
-import { Dialog } from './Dialog';
+import { ChangeAvatarFields } from '../../../lib/types/changeAvatar';
+import { Dialog } from '../ui/Dialog';
 
 export const ChangeAvatar = ({
   uploadAvatar,

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { stringToMonthDayYear } from '../lib/utils/date';
+import { stringToMonthDayYear } from '../../../lib/utils/date';
 
 interface Props {
   user: any;

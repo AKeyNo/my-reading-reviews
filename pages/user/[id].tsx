@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Pencil, X } from 'phosphor-react';
 import { useEffect, useRef, useState } from 'react';
-import { Avatar } from '../../components/Avatar';
-import { Card } from '../../components/Card';
-import { RecentActivity } from '../../components/RecentActivity';
+import { Avatar } from '../../src/components/user/Avatar';
+import { Card } from '../../src/components/ui/Card';
+import { RecentActivity } from '../../src/components/activity/RecentActivity';
 
 export default function UserPage() {
   const router = useRouter();

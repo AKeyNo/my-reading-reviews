@@ -4,8 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Card } from '../../../components/Card';
-import Loading from '../../../components/Loading';
+import { Card } from '../../../src/components/ui/Card';
+import Loading from '../../../src/components/ui/Loading';
 import { useScroll } from '../../../lib/hooks/useScroll';
 
 export default function SearchBook() {

@@ -1,8 +1,8 @@
-import { stringToMonthDayYear } from '../lib/utils/date';
-import { Avatar } from './Avatar';
-import { Review as ReviewType } from '../lib/types/book';
-import { useAppDispatch } from '../lib/hooks/reduxHooks';
-import { deleteReview } from '../lib/slices/bookSlice';
+import { stringToMonthDayYear } from '../../../lib/utils/date';
+import { Avatar } from '../user/Avatar';
+import { Review as ReviewType } from '../../../lib/types/book';
+import { useAppDispatch } from '../../../lib/hooks/reduxHooks';
+import { deleteReview } from '../../../lib/slices/bookSlice';
 import { useUser } from '@supabase/auth-helpers-react';
 
 export const Review = ({

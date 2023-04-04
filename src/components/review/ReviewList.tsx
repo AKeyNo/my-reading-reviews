@@ -1,12 +1,12 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import { useEffect, useRef } from 'react';
 import { Review } from './Review';
-import { useAppDispatch, useAppSelector } from '../lib/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxHooks';
 import {
   fetchReviews,
   submitReview,
   toggleReviewEditor,
-} from '../lib/slices/bookSlice';
+} from '../../../lib/slices/bookSlice';
 
 export const ReviewList = (): JSX.Element => {
   const user = useUser();

@@ -1,14 +1,14 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import { Heart, X } from 'phosphor-react';
-import { useAppDispatch, useAppSelector } from '../lib/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxHooks';
 import {
   closeListEditor,
   deleteUserBookInformation,
   submitUserBookInformation,
-} from '../lib/slices/bookSlice';
+} from '../../../lib/slices/bookSlice';
 import { useEffect, useState } from 'react';
-import { UserBookInformation } from '../lib/types/book';
+import { UserBookInformation } from '../../../lib/types/book';
 
 export const ListEditor = () => {
   const dispatch = useAppDispatch();

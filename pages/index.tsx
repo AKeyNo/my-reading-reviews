@@ -4,8 +4,8 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { AuthButtons } from '../components/AuthButtons';
-import { LatestActivity } from '../components/LatestActivity';
+import { AuthButtons } from '../src/components/ui/AuthButtons';
+import { LatestActivity } from '../src/components/layout/LatestActivity';
 
 interface Props {
   session: Session | null;

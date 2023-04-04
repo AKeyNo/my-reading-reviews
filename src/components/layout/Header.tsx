@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CaretDown, SignOut, User } from 'phosphor-react';
 import { useEffect, useState } from 'react';
-import { Avatar } from './Avatar';
+import { Avatar } from '../user/Avatar';
 
 export const Header = () => {
   const supabase = useSupabaseClient();
