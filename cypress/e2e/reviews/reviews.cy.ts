@@ -16,7 +16,7 @@ describe('creating reviews', () => {
 
   it('should create a review, edit it, and then delete it', () => {
     const userBookInformation = {
-      book_id: 'WwN4BgAAQBAJ',
+      book_id: '3YsTngEACAAJ',
       status: 'Completed',
       score: '8',
       firstReview:
@@ -30,13 +30,15 @@ describe('creating reviews', () => {
 
     cy.get('[data-cy="header-search"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
-    cy.get('[data-cy="search-input-book-title"]').type("Charlotte's Web");
+    // 3YsTngEACAAJ is the book id for Charlotte's Web
+    cy.get('[data-cy="search-input-book-title"]').type('3YsTngEACAAJ');
     cy.get('[data-cy="search-book-results"]')
       .contains("Charlotte's Web")
       .click();
 
     // create the review
     cy.url().should('eq', `${Cypress.config().baseUrl}book/${book_id}`);
+    cy.get('[data-cy="book-title"]').contains("Charlotte's Web");
     cy.get('[data-cy="create-review-button"]').should('not.exist');
     cy.get(`[data-cy="review-${username}-${book_id}"]`).should('not.exist');
     cy.get('[data-cy="add-to-list-button"]').click();

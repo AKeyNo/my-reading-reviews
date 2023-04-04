@@ -12,8 +12,14 @@ export const ReviewList = (): JSX.Element => {
   const user = useUser();
   const dispatch = useAppDispatch();
 
-  const { bookID, status, userReview, otherReviews, openedReviewEditor } =
-    useAppSelector((state) => state.book);
+  const {
+    bookID,
+    status,
+    userReview,
+    otherReviews,
+    openedReviewEditor,
+    userBookInformation,
+  } = useAppSelector((state) => state.book);
 
   const reviewRef = useRef<HTMLTextAreaElement>(null);
 
@@ -45,7 +51,7 @@ export const ReviewList = (): JSX.Element => {
     <div className='w-full col-span-3'>
       <div className='flex items-center mb-4'>
         <div className='font-semibold'>Reviews</div>
-        {user && status == 'succeeded' && (
+        {user && status == 'succeeded' && userBookInformation != null && (
           <button
             onClick={dispatchToggleReviewEditor}
             className='p-2 ml-auto text-sm duration-100 bg-orange-700 rounded-md hover:bg-orange-800'

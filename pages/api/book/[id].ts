@@ -32,19 +32,6 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
       `https://www.googleapis.com/books/v1/volumes/${id}?key=${process.env.GOOGLE_BOOKS_API_KEY}`
     );
 
-    const {
-      data: { user },
-    } = await supabaseServerClient.auth.getUser();
-
-    if (!user) return res.status(200).json(response.data.volumeInfo);
-
-    const { data: userBookInformation } = await supabaseServerClient
-      .from('read_list')
-      .select('*')
-      .eq('user_id', user.id)
-      .eq('book_id', id)
-      .maybeSingle();
-
     const { data: bookStats, error: bookStatsResponseError } =
       await supabaseServerClient.rpc('get_book_stats', {
         book_id_to_check: id as string,
@@ -52,6 +39,25 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 
     if (bookStatsResponseError)
       return res.status(200).json(response.data.volumeInfo);
+
+    const {
+      data: { user },
+    } = await supabaseServerClient.auth.getUser();
+
+    if (!user)
+      return res
+        .status(200)
+        .json({
+          volumeInfo: response.data.volumeInfo,
+          bookStats: bookStats[0],
+        });
+
+    const { data: userBookInformation } = await supabaseServerClient
+      .from('read_list')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('book_id', id)
+      .maybeSingle();
 
     return res.status(200).json({
       volumeInfo: response.data.volumeInfo,

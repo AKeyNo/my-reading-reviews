@@ -45,10 +45,11 @@ describe('manipulating read list', () => {
 
     cy.get('[data-cy="header-search"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
-    cy.get('[data-cy="search-input-book-title"]').type('The Hobbit');
+    cy.get('[data-cy="search-input-book-title"]').type('pD6arNyKyi8C');
     cy.get('[data-cy="search-book-results"]').contains('The Hobbit').click();
 
     cy.url().should('eq', `${Cypress.config().baseUrl}book/pD6arNyKyi8C`);
+    cy.get('[data-cy="book-title"]').contains('The Hobbit');
     cy.get('[data-cy="community-stats-total-listings"]')
       .then(($totalListings) => {
         beforeTotalListings = parseInt(
@@ -156,12 +157,13 @@ describe('manipulating read list', () => {
 
     cy.get('[data-cy="header-search"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}search/book`);
-    cy.get('[data-cy="search-input-book-title"]').type('A Tale of Two Cities');
+    cy.get('[data-cy="search-input-book-title"]').type('57t6qo8qvGEC');
     cy.get('[data-cy="search-book-results"]')
       .contains('A Tale of Two Cities')
       .click();
 
-    cy.url().should('eq', `${Cypress.config().baseUrl}book/w88oAwAAQBAJ`);
+    cy.get('[data-cy="book-title"]').contains('A Tale of Two Cities');
+    cy.url().should('eq', `${Cypress.config().baseUrl}book/57t6qo8qvGEC`);
     cy.get('[data-cy="community-stats-total-favorites"]')
       .then(($totalListings) => {
         beforeTotalFavoritesFirst = parseInt(
@@ -186,6 +188,7 @@ describe('manipulating read list', () => {
     cy.get('[data-cy="search-book-results"]')
       .contains(/^To Kill a Mockingbird$/)
       .click();
+    cy.get('[data-cy="book-title"]').contains(/^To Kill a Mockingbird$/);
     cy.url().should('eq', `${Cypress.config().baseUrl}book/NeMtSAAACAAJ`);
     cy.get('[data-cy="community-stats-total-favorites"]')
       .then(($totalListings) => {
@@ -206,12 +209,12 @@ describe('manipulating read list', () => {
 
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
     // A Tale of Two Cities
-    cy.get('[data-cy="profile-favorite-book-w88oAwAAQBAJ"]');
+    cy.get('[data-cy="profile-favorite-book-57t6qo8qvGEC"]');
     // To Kill a Mockingbird
     cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]');
 
     // now unfavorite A Tale of Two Cities
-    cy.get('[data-cy="profile-favorite-book-w88oAwAAQBAJ"]').click();
+    cy.get('[data-cy="profile-favorite-book-57t6qo8qvGEC"]').click();
     cy.get('[data-cy="add-to-list-button"]').contains('Edit Entry').click();
 
     cy.get('[data-cy="community-stats-total-favorites"]')
@@ -230,7 +233,7 @@ describe('manipulating read list', () => {
 
     cy.get('[data-cy="header-profile"]').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}user/${username}`);
-    cy.get('[data-cy="profile-favorite-book-w88oAwAAQBAJ"]').should(
+    cy.get('[data-cy="profile-favorite-book-57t6qo8qvGEC"]').should(
       'not.exist'
     );
     cy.get('[data-cy="profile-favorite-book-NeMtSAAACAAJ"]');

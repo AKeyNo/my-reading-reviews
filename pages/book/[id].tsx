@@ -63,7 +63,7 @@ export default function BookPage() {
             className='w-48 mx-auto rounded-md'
           />
 
-          {user && (
+          {user && book.status == 'succeeded' && (
             <button
               onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 e.preventDefault();
@@ -83,7 +83,9 @@ export default function BookPage() {
         </Dialog>
         <div className='col-span-3'>
           <div className='flex flex-col items-center pb-4 space-x-2 space-y-2 sm:space-y-0 sm:flex-row'>
-            <h1 className='text-3xl text-center'>{volumeInfo?.title}</h1>
+            <h1 className='text-3xl text-center' data-cy='book-title'>
+              {volumeInfo?.title}
+            </h1>
 
             {volumeInfo?.previewLink && (
               <Link
