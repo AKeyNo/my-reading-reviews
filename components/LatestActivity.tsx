@@ -36,7 +36,9 @@ export const LatestActivity = () => {
 
   return (
     <Card className='w-full'>
-      <h2 className='mb-4 font-semibold'>Latest Activity</h2>
+      <h2 className='mb-4 font-semibold' data-cy='latest-activity'>
+        Latest Activity
+      </h2>
       {loading && <Loading />}
       {!loading &&
         latestActivity &&
